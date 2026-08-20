@@ -1,0 +1,1903 @@
+{
+  "fetchedAt": "2026-08-13T22:54:53.802Z",
+  "source": "https://127.0.0.1:2999/liveclientdata/allgamedata",
+  "data": {
+    "activePlayer": {
+      "abilities": {
+        "E": {
+          "abilityLevel": 5,
+          "displayName": "Charme",
+          "id": "AhriE",
+          "rawDescription": "GeneratedTip_Spell_AhriE_Description",
+          "rawDisplayName": "GeneratedTip_Spell_AhriE_DisplayName"
+        },
+        "Passive": {
+          "displayName": "Vol essentiel",
+          "id": "AhriPassive",
+          "rawDescription": "GeneratedTip_Passive_AhriPassive_Description",
+          "rawDisplayName": "GeneratedTip_Passive_AhriPassive_DisplayName"
+        },
+        "Q": {
+          "abilityLevel": 5,
+          "displayName": "Orbe d'illusion",
+          "id": "AhriQ",
+          "rawDescription": "GeneratedTip_Spell_AhriQ_Description",
+          "rawDisplayName": "GeneratedTip_Spell_AhriQ_DisplayName"
+        },
+        "R": {
+          "abilityLevel": 3,
+          "displayName": "Assaut spirituel",
+          "id": "AhriR",
+          "rawDescription": "GeneratedTip_Spell_AhriR_Description",
+          "rawDisplayName": "GeneratedTip_Spell_AhriR_DisplayName"
+        },
+        "W": {
+          "abilityLevel": 3,
+          "displayName": "Lucioles",
+          "id": "AhriW",
+          "rawDescription": "GeneratedTip_Spell_AhriW_Description",
+          "rawDisplayName": "GeneratedTip_Spell_AhriW_DisplayName"
+        }
+      },
+      "championStats": {
+        "abilityHaste": 0,
+        "abilityPower": 216.66000366210938,
+        "armor": 81.79499816894531,
+        "armorPenetrationFlat": 0,
+        "armorPenetrationPercent": 1,
+        "attackDamage": 96.42500305175781,
+        "attackRange": 550,
+        "attackSpeed": 0.8670312762260437,
+        "bonusArmorPenetrationPercent": 1,
+        "bonusMagicPenetrationPercent": 1,
+        "critChance": 0,
+        "critDamage": 200,
+        "currentHealth": 1607.0306396484375,
+        "healShieldPower": 0,
+        "healthRegenRate": 2.236999988555908,
+        "lifeSteal": 0,
+        "magicLethality": 0,
+        "magicPenetrationFlat": 20,
+        "magicPenetrationPercent": 0.9200000166893005,
+        "magicResist": 48.817501068115234,
+        "maxHealth": 2502.009033203125,
+        "moveSpeed": 384.375,
+        "omnivamp": 0,
+        "physicalLethality": 0,
+        "physicalVamp": 0,
+        "resourceMax": 779.875,
+        "resourceRegenRate": 3.9160003662109375,
+        "resourceType": "MANA",
+        "resourceValue": 779.875,
+        "spellVamp": 0,
+        "tenacity": 5
+      },
+      "currentGold": 9734.4892578125,
+      "fullRunes": {
+        "generalRunes": [
+          {
+            "displayName": "Jeu de jambes",
+            "id": 8021,
+            "rawDescription": "perk_tooltip_FleetFootwork",
+            "rawDisplayName": "perk_displayname_FleetFootwork"
+          },
+          {
+            "displayName": "Présence d'esprit",
+            "id": 8009,
+            "rawDescription": "perk_tooltip_PresenceOfMind",
+            "rawDisplayName": "perk_displayname_PresenceOfMind"
+          },
+          {
+            "displayName": "Légende : accélération",
+            "id": 9105,
+            "rawDescription": "perk_tooltip_9105",
+            "rawDisplayName": "perk_displayname_9105"
+          },
+          {
+            "displayName": "Coup de grâce",
+            "id": 8014,
+            "rawDescription": "perk_tooltip_CoupDeGrace",
+            "rawDisplayName": "perk_displayname_CoupDeGrace"
+          },
+          {
+            "displayName": "Plaque d'os",
+            "id": 8473,
+            "rawDescription": "perk_tooltip_BonePlatingTooltip",
+            "rawDisplayName": "perk_displayname_BonePlating"
+          },
+          {
+            "displayName": "Surcroissance",
+            "id": 8451,
+            "rawDescription": "perk_tooltip_Overgrowth",
+            "rawDisplayName": "perk_displayname_Overgrowth"
+          }
+        ],
+        "keystone": {
+          "displayName": "Jeu de jambes",
+          "id": 8021,
+          "rawDescription": "perk_tooltip_FleetFootwork",
+          "rawDisplayName": "perk_displayname_FleetFootwork"
+        },
+        "primaryRuneTree": {
+          "displayName": "Précision",
+          "id": 8000,
+          "rawDescription": "perkstyle_tooltip_7201",
+          "rawDisplayName": "perkstyle_displayname_7201"
+        },
+        "secondaryRuneTree": {
+          "displayName": "Volonté",
+          "id": 8400,
+          "rawDescription": "perkstyle_tooltip_7204",
+          "rawDisplayName": "perkstyle_displayname_7204"
+        },
+        "statRunes": [
+          {
+            "id": 5008,
+            "rawDescription": "perk_tooltip_StatModAdaptive"
+          },
+          {
+            "id": 5010,
+            "rawDescription": "perk_tooltip_StatModMovementSpeed"
+          },
+          {
+            "id": 5001,
+            "rawDescription": "perk_tooltip_StatModHealthScaling"
+          }
+        ]
+      },
+      "level": 16,
+      "riotId": "YtoGoroShi#EUW",
+      "riotIdGameName": "YtoGoroShi",
+      "riotIdTagLine": "EUW",
+      "summonerName": "YtoGoroShi#EUW",
+      "teamRelativeColors": true
+    },
+    "allPlayers": [
+      {
+        "championName": "Ahri",
+        "isBot": false,
+        "isDead": false,
+        "items": [
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Anneau de Doran",
+            "itemID": 1056,
+            "price": 400,
+            "rawDescription": "GeneratedTip_Item_1056_Description",
+            "rawDisplayName": "Item_1056_Name",
+            "slot": 0
+          },
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Coiffe de Rabadon",
+            "itemID": 3089,
+            "price": 1100,
+            "rawDescription": "GeneratedTip_Item_3089_Description",
+            "rawDisplayName": "Item_3089_Name",
+            "slot": 1
+          },
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Chaussures de lanceur de sorts",
+            "itemID": 3175,
+            "price": 0,
+            "rawDescription": "GeneratedTip_Item_3175_Description",
+            "rawDisplayName": "Item_3175_Name",
+            "slot": 2
+          },
+          {
+            "canUse": true,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Balise camouflée",
+            "itemID": 3340,
+            "price": 0,
+            "rawDescription": "GeneratedTip_Item_3340_Description",
+            "rawDisplayName": "Item_3340_Name",
+            "slot": 6
+          }
+        ],
+        "level": 16,
+        "position": "NONE",
+        "rawChampionName": "game_character_displayname_Ahri",
+        "rawSkinName": "game_character_displayname_Ahri",
+        "respawnTimer": 0,
+        "riotId": "YtoGoroShi#EUW",
+        "riotIdGameName": "YtoGoroShi",
+        "riotIdTagLine": "EUW",
+        "runes": {
+          "keystone": {
+            "displayName": "Jeu de jambes",
+            "id": 8021,
+            "rawDescription": "perk_tooltip_FleetFootwork",
+            "rawDisplayName": "perk_displayname_FleetFootwork"
+          },
+          "primaryRuneTree": {
+            "displayName": "Précision",
+            "id": 8000,
+            "rawDescription": "perkstyle_tooltip_7201",
+            "rawDisplayName": "perkstyle_displayname_7201"
+          },
+          "secondaryRuneTree": {
+            "displayName": "Volonté",
+            "id": 8400,
+            "rawDescription": "perkstyle_tooltip_7204",
+            "rawDisplayName": "perkstyle_displayname_7204"
+          }
+        },
+        "scores": {
+          "assists": 6,
+          "creepScore": 70,
+          "deaths": 5,
+          "kills": 38,
+          "wardScore": 15.71235179901123
+        },
+        "skinID": 0,
+        "skinName": "Ahri",
+        "summonerName": "YtoGoroShi#EUW",
+        "summonerSpells": {
+          "summonerSpellOne": {
+            "displayName": "Saut éclair",
+            "rawDescription": "GeneratedTip_SummonerSpell_SummonerFlash_Description",
+            "rawDisplayName": "GeneratedTip_SummonerSpell_SummonerFlash_DisplayName"
+          },
+          "summonerSpellTwo": {
+            "displayName": "Téléportation débridée",
+            "rawDescription": "GeneratedTip_SummonerSpell_S12_SummonerTeleportUpgrade_Description",
+            "rawDisplayName": "GeneratedTip_SummonerSpell_S12_SummonerTeleportUpgrade_DisplayName"
+          }
+        },
+        "team": "ORDER"
+      },
+      {
+        "championName": "Rakan",
+        "isBot": true,
+        "isDead": false,
+        "items": [
+          {
+            "canUse": true,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Trésor des mondes",
+            "itemID": 3867,
+            "price": 400,
+            "rawDescription": "GeneratedTip_Item_3867_Description",
+            "rawDisplayName": "Item_3867_Name",
+            "slot": 0
+          },
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Bottes de lucidité",
+            "itemID": 3158,
+            "price": 350,
+            "rawDescription": "GeneratedTip_Item_3158_Description",
+            "rawDisplayName": "Item_3158_Name",
+            "slot": 1
+          },
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Convergence de Zeke",
+            "itemID": 3050,
+            "price": 700,
+            "rawDescription": "GeneratedTip_Item_3050_Description",
+            "rawDisplayName": "Item_3050_Name",
+            "slot": 2
+          },
+          {
+            "canUse": true,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Médaillon de l'Iron Solari",
+            "itemID": 3190,
+            "price": 700,
+            "rawDescription": "GeneratedTip_Item_3190_Description",
+            "rawDisplayName": "Item_3190_Name",
+            "slot": 3
+          },
+          {
+            "canUse": true,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Brouilleur oraculaire",
+            "itemID": 3364,
+            "price": 0,
+            "rawDescription": "GeneratedTip_Item_3364_Description",
+            "rawDisplayName": "Item_3364_Name",
+            "slot": 6
+          }
+        ],
+        "level": 12,
+        "position": "UTILITY",
+        "rawChampionName": "game_character_displayname_Rakan",
+        "rawSkinName": "game_character_displayname_Rakan",
+        "respawnTimer": 0,
+        "riotId": "Rakan#BOT",
+        "riotIdGameName": "Rakan",
+        "riotIdTagLine": "BOT",
+        "runes": {
+          "keystone": {
+            "displayName": "Poigne de l'immortel",
+            "id": 8437,
+            "rawDescription": "perk_tooltip_GraspOfTheUndying",
+            "rawDisplayName": "perk_displayname_GraspOfTheUndying"
+          },
+          "primaryRuneTree": {
+            "displayName": "Volonté",
+            "id": 8400,
+            "rawDescription": "perkstyle_tooltip_7204",
+            "rawDisplayName": "perkstyle_displayname_7204"
+          },
+          "secondaryRuneTree": {
+            "displayName": "Sorcellerie",
+            "id": 8200,
+            "rawDescription": "perkstyle_tooltip_7202",
+            "rawDisplayName": "perkstyle_displayname_7202"
+          }
+        },
+        "scores": {
+          "assists": 8,
+          "creepScore": 40,
+          "deaths": 3,
+          "kills": 5,
+          "wardScore": 4.932465553283691
+        },
+        "skinID": 0,
+        "skinName": "Rakan",
+        "summonerName": "Bot Rakan",
+        "summonerSpells": {
+          "summonerSpellOne": {
+            "displayName": "Saut éclair",
+            "rawDescription": "GeneratedTip_SummonerSpell_SummonerFlash_Description",
+            "rawDisplayName": "GeneratedTip_SummonerSpell_SummonerFlash_DisplayName"
+          },
+          "summonerSpellTwo": {
+            "displayName": "Embrasement",
+            "rawDescription": "GeneratedTip_SummonerSpell_SummonerDot_Description",
+            "rawDisplayName": "GeneratedTip_SummonerSpell_SummonerDot_DisplayName"
+          }
+        },
+        "team": "ORDER"
+      },
+      {
+        "championName": "Amumu",
+        "isBot": true,
+        "isDead": false,
+        "items": [
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Armure d'étoffe",
+            "itemID": 1029,
+            "price": 300,
+            "rawDescription": "GeneratedTip_Item_1029_Description",
+            "rawDisplayName": "Item_1029_Name",
+            "slot": 0
+          },
+          {
+            "canUse": true,
+            "consumable": true,
+            "count": 1,
+            "displayName": "Balise de contrôle",
+            "itemID": 2055,
+            "price": 75,
+            "rawDescription": "GeneratedTip_Item_2055_Description",
+            "rawDisplayName": "Item_2055_Name",
+            "slot": 1
+          },
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Coques en acier",
+            "itemID": 3047,
+            "price": 600,
+            "rawDescription": "GeneratedTip_Item_3047_Description",
+            "rawDisplayName": "Item_3047_Name",
+            "slot": 2
+          },
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Tourment de Liandry",
+            "itemID": 6653,
+            "price": 800,
+            "rawDescription": "GeneratedTip_Item_6653_Description",
+            "rawDisplayName": "Item_6653_Name",
+            "slot": 3
+          },
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Cendres de Bami",
+            "itemID": 6660,
+            "price": 250,
+            "rawDescription": "GeneratedTip_Item_6660_Description",
+            "rawDisplayName": "Item_6660_Name",
+            "slot": 4
+          },
+          {
+            "canUse": true,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Balise camouflée",
+            "itemID": 3340,
+            "price": 0,
+            "rawDescription": "GeneratedTip_Item_3340_Description",
+            "rawDisplayName": "Item_3340_Name",
+            "slot": 6
+          }
+        ],
+        "level": 12,
+        "position": "JUNGLE",
+        "rawChampionName": "game_character_displayname_Amumu",
+        "rawSkinName": "game_character_displayname_Amumu",
+        "respawnTimer": 0,
+        "riotId": "Amumu#BOT",
+        "riotIdGameName": "Amumu",
+        "riotIdTagLine": "BOT",
+        "runes": {
+          "keystone": {
+            "displayName": "Poigne de l'immortel",
+            "id": 8437,
+            "rawDescription": "perk_tooltip_GraspOfTheUndying",
+            "rawDisplayName": "perk_displayname_GraspOfTheUndying"
+          },
+          "primaryRuneTree": {
+            "displayName": "Volonté",
+            "id": 8400,
+            "rawDescription": "perkstyle_tooltip_7204",
+            "rawDisplayName": "perkstyle_displayname_7204"
+          },
+          "secondaryRuneTree": {
+            "displayName": "Sorcellerie",
+            "id": 8200,
+            "rawDescription": "perkstyle_tooltip_7202",
+            "rawDisplayName": "perkstyle_displayname_7202"
+          }
+        },
+        "scores": {
+          "assists": 9,
+          "creepScore": 120,
+          "deaths": 3,
+          "kills": 5,
+          "wardScore": 5.850081920623779
+        },
+        "skinID": 0,
+        "skinName": "Amumu",
+        "summonerName": "Bot Amumu",
+        "summonerSpells": {
+          "summonerSpellOne": {
+            "displayName": "Saut éclair",
+            "rawDescription": "GeneratedTip_SummonerSpell_SummonerFlash_Description",
+            "rawDisplayName": "GeneratedTip_SummonerSpell_SummonerFlash_DisplayName"
+          },
+          "summonerSpellTwo": {
+            "displayName": "Châtiment primitif",
+            "rawDescription": "GeneratedTip_SummonerSpell_SummonerSmiteAvatarDefensive_Description",
+            "rawDisplayName": "GeneratedTip_SummonerSpell_SummonerSmiteAvatarDefensive_DisplayName"
+          }
+        },
+        "team": "ORDER"
+      },
+      {
+        "championName": "Lissandra",
+        "isBot": true,
+        "isDead": true,
+        "items": [
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Anneau de Doran",
+            "itemID": 1056,
+            "price": 400,
+            "rawDescription": "GeneratedTip_Item_1056_Description",
+            "rawDisplayName": "Item_1056_Name",
+            "slot": 0
+          },
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Malfaisance",
+            "itemID": 3118,
+            "price": 650,
+            "rawDescription": "GeneratedTip_Item_3118_Description",
+            "rawDisplayName": "Item_3118_Name",
+            "slot": 1
+          },
+          {
+            "canUse": true,
+            "consumable": true,
+            "count": 1,
+            "displayName": "Balise de contrôle",
+            "itemID": 2055,
+            "price": 75,
+            "rawDescription": "GeneratedTip_Item_2055_Description",
+            "rawDisplayName": "Item_2055_Name",
+            "slot": 2
+          },
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Chaussures de lanceur de sorts",
+            "itemID": 3175,
+            "price": 0,
+            "rawDescription": "GeneratedTip_Item_3175_Description",
+            "rawDisplayName": "Item_3175_Name",
+            "slot": 3
+          },
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Poussière luisante",
+            "itemID": 2022,
+            "price": 250,
+            "rawDescription": "GeneratedTip_Item_2022_Description",
+            "rawDisplayName": "Item_2022_Name",
+            "slot": 4
+          },
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Alternateur Hextech",
+            "itemID": 3145,
+            "price": 300,
+            "rawDescription": "GeneratedTip_Item_3145_Description",
+            "rawDisplayName": "Item_3145_Name",
+            "slot": 5
+          },
+          {
+            "canUse": true,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Altération divinatoire",
+            "itemID": 3363,
+            "price": 0,
+            "rawDescription": "GeneratedTip_Item_3363_Description",
+            "rawDisplayName": "Item_3363_Name",
+            "slot": 6
+          }
+        ],
+        "level": 11,
+        "position": "MIDDLE",
+        "rawChampionName": "game_character_displayname_Lissandra",
+        "rawSkinName": "game_character_displayname_Lissandra",
+        "respawnTimer": 32.50587463378906,
+        "riotId": "Lissandra#BOT",
+        "riotIdGameName": "Lissandra",
+        "riotIdTagLine": "BOT",
+        "runes": {
+          "keystone": {
+            "displayName": "Électrocution",
+            "id": 8112,
+            "rawDescription": "perk_tooltip_Electrocute",
+            "rawDisplayName": "perk_displayname_Electrocute"
+          },
+          "primaryRuneTree": {
+            "displayName": "Domination",
+            "id": 8100,
+            "rawDescription": "perkstyle_tooltip_7200",
+            "rawDisplayName": "perkstyle_displayname_7200"
+          },
+          "secondaryRuneTree": {
+            "displayName": "Précision",
+            "id": 8000,
+            "rawDescription": "perkstyle_tooltip_7201",
+            "rawDisplayName": "perkstyle_displayname_7201"
+          }
+        },
+        "scores": {
+          "assists": 4,
+          "creepScore": 50,
+          "deaths": 14,
+          "kills": 3,
+          "wardScore": 3.7333333492279053
+        },
+        "skinID": 0,
+        "skinName": "Lissandra",
+        "summonerName": "Bot Lissandra",
+        "summonerSpells": {
+          "summonerSpellOne": {
+            "displayName": "Saut éclair",
+            "rawDescription": "GeneratedTip_SummonerSpell_SummonerFlash_Description",
+            "rawDisplayName": "GeneratedTip_SummonerSpell_SummonerFlash_DisplayName"
+          },
+          "summonerSpellTwo": {
+            "displayName": "Téléportation débridée",
+            "rawDescription": "GeneratedTip_SummonerSpell_S12_SummonerTeleportUpgrade_Description",
+            "rawDisplayName": "GeneratedTip_SummonerSpell_S12_SummonerTeleportUpgrade_DisplayName"
+          }
+        },
+        "team": "CHAOS"
+      },
+      {
+        "championName": "Diana",
+        "isBot": true,
+        "isDead": true,
+        "items": [
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Chaussures de sorcier",
+            "itemID": 3020,
+            "price": 800,
+            "rawDescription": "GeneratedTip_Item_3020_Description",
+            "rawDisplayName": "Item_3020_Name",
+            "slot": 0
+          },
+          {
+            "canUse": true,
+            "consumable": true,
+            "count": 1,
+            "displayName": "Balise de contrôle",
+            "itemID": 2055,
+            "price": 75,
+            "rawDescription": "GeneratedTip_Item_2055_Description",
+            "rawDisplayName": "Item_2055_Name",
+            "slot": 1
+          },
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Aube et crépuscule",
+            "itemID": 2510,
+            "price": 300,
+            "rawDescription": "GeneratedTip_Item_2510_Description",
+            "rawDisplayName": "Item_2510_Name",
+            "slot": 2
+          },
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Codex méphitique",
+            "itemID": 3108,
+            "price": 200,
+            "rawDescription": "GeneratedTip_Item_3108_Description",
+            "rawDisplayName": "Item_3108_Name",
+            "slot": 3
+          },
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Cristal de rubis",
+            "itemID": 1028,
+            "price": 400,
+            "rawDescription": "GeneratedTip_Item_1028_Description",
+            "rawDisplayName": "Item_1028_Name",
+            "slot": 4
+          },
+          {
+            "canUse": true,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Balise camouflée",
+            "itemID": 3340,
+            "price": 0,
+            "rawDescription": "GeneratedTip_Item_3340_Description",
+            "rawDisplayName": "Item_3340_Name",
+            "slot": 6
+          }
+        ],
+        "level": 11,
+        "position": "JUNGLE",
+        "rawChampionName": "game_character_displayname_Diana",
+        "rawSkinName": "game_character_displayname_Diana",
+        "respawnTimer": 19.37451171875,
+        "riotId": "Diana#BOT",
+        "riotIdGameName": "Diana",
+        "riotIdTagLine": "BOT",
+        "runes": {
+          "keystone": {
+            "displayName": "Électrocution",
+            "id": 8112,
+            "rawDescription": "perk_tooltip_Electrocute",
+            "rawDisplayName": "perk_displayname_Electrocute"
+          },
+          "primaryRuneTree": {
+            "displayName": "Domination",
+            "id": 8100,
+            "rawDescription": "perkstyle_tooltip_7200",
+            "rawDisplayName": "perkstyle_displayname_7200"
+          },
+          "secondaryRuneTree": {
+            "displayName": "Précision",
+            "id": 8000,
+            "rawDescription": "perkstyle_tooltip_7201",
+            "rawDisplayName": "perkstyle_displayname_7201"
+          }
+        },
+        "scores": {
+          "assists": 3,
+          "creepScore": 40,
+          "deaths": 8,
+          "kills": 0,
+          "wardScore": 9.589112281799316
+        },
+        "skinID": 0,
+        "skinName": "Diana",
+        "summonerName": "Bot Diana",
+        "summonerSpells": {
+          "summonerSpellOne": {
+            "displayName": "Saut éclair",
+            "rawDescription": "GeneratedTip_SummonerSpell_SummonerFlash_Description",
+            "rawDisplayName": "GeneratedTip_SummonerSpell_SummonerFlash_DisplayName"
+          },
+          "summonerSpellTwo": {
+            "displayName": "Châtiment primitif",
+            "rawDescription": "GeneratedTip_SummonerSpell_SummonerSmiteAvatarUtility_Description",
+            "rawDisplayName": "GeneratedTip_SummonerSpell_SummonerSmiteAvatarUtility_DisplayName"
+          }
+        },
+        "team": "CHAOS"
+      },
+      {
+        "championName": "Jhin",
+        "isBot": true,
+        "isDead": true,
+        "items": [
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Lame de Doran",
+            "itemID": 1055,
+            "price": 450,
+            "rawDescription": "GeneratedTip_Item_1055_Description",
+            "rawDisplayName": "Item_1055_Name",
+            "slot": 0
+          },
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Percepteur",
+            "itemID": 6676,
+            "price": 525,
+            "rawDescription": "GeneratedTip_Item_6676_Description",
+            "rawDisplayName": "Item_6676_Name",
+            "slot": 1
+          },
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Orgueil",
+            "itemID": 6697,
+            "price": 750,
+            "rawDescription": "GeneratedTip_Item_6697_Description",
+            "rawDisplayName": "Item_6697_Name",
+            "slot": 2
+          },
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Cape d'agilité",
+            "itemID": 1018,
+            "price": 600,
+            "rawDescription": "GeneratedTip_Item_1018_Description",
+            "rawDisplayName": "Item_1018_Name",
+            "slot": 3
+          },
+          {
+            "canUse": true,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Altération divinatoire",
+            "itemID": 3363,
+            "price": 0,
+            "rawDescription": "GeneratedTip_Item_3363_Description",
+            "rawDisplayName": "Item_3363_Name",
+            "slot": 6
+          }
+        ],
+        "level": 10,
+        "position": "BOTTOM",
+        "rawChampionName": "game_character_displayname_Jhin",
+        "rawSkinName": "game_character_displayname_Jhin",
+        "respawnTimer": 22.276731491088867,
+        "riotId": "Jhin#BOT",
+        "riotIdGameName": "Jhin",
+        "riotIdTagLine": "BOT",
+        "runes": {
+          "keystone": {
+            "displayName": "Comète arcanique",
+            "id": 8229,
+            "rawDescription": "perk_tooltip_ArcaneComet",
+            "rawDisplayName": "perk_displayname_ArcaneComet"
+          },
+          "primaryRuneTree": {
+            "displayName": "Sorcellerie",
+            "id": 8200,
+            "rawDescription": "perkstyle_tooltip_7202",
+            "rawDisplayName": "perkstyle_displayname_7202"
+          },
+          "secondaryRuneTree": {
+            "displayName": "Domination",
+            "id": 8100,
+            "rawDescription": "perkstyle_tooltip_7200",
+            "rawDisplayName": "perkstyle_displayname_7200"
+          }
+        },
+        "scores": {
+          "assists": 2,
+          "creepScore": 80,
+          "deaths": 11,
+          "kills": 5,
+          "wardScore": 1.0500977039337158
+        },
+        "skinID": 0,
+        "skinName": "Jhin",
+        "summonerName": "Bot Jhin",
+        "summonerSpells": {
+          "summonerSpellOne": {
+            "displayName": "Barrière",
+            "rawDescription": "GeneratedTip_SummonerSpell_SummonerBarrier_Description",
+            "rawDisplayName": "GeneratedTip_SummonerSpell_SummonerBarrier_DisplayName"
+          },
+          "summonerSpellTwo": {
+            "displayName": "Saut éclair",
+            "rawDescription": "GeneratedTip_SummonerSpell_SummonerFlash_Description",
+            "rawDisplayName": "GeneratedTip_SummonerSpell_SummonerFlash_DisplayName"
+          }
+        },
+        "team": "CHAOS"
+      },
+      {
+        "championName": "Taric",
+        "isBot": true,
+        "isDead": true,
+        "items": [
+          {
+            "canUse": true,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Traîneau du solstice",
+            "itemID": 3876,
+            "price": 0,
+            "rawDescription": "GeneratedTip_Item_3876_Description",
+            "rawDisplayName": "Item_3876_Name",
+            "slot": 0
+          },
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Coques en acier",
+            "itemID": 3047,
+            "price": 600,
+            "rawDescription": "GeneratedTip_Item_3047_Description",
+            "rawDisplayName": "Item_3047_Name",
+            "slot": 1
+          },
+          {
+            "canUse": true,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Médaillon de l'Iron Solari",
+            "itemID": 3190,
+            "price": 700,
+            "rawDescription": "GeneratedTip_Item_3190_Description",
+            "rawDisplayName": "Item_3190_Name",
+            "slot": 2
+          },
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Approche de l'hiver",
+            "itemID": 3119,
+            "price": 300,
+            "rawDescription": "GeneratedTip_Item_3119_Description",
+            "rawDisplayName": "Item_3119_Name",
+            "slot": 3
+          },
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Poussière luisante",
+            "itemID": 2022,
+            "price": 250,
+            "rawDescription": "GeneratedTip_Item_2022_Description",
+            "rawDisplayName": "Item_2022_Name",
+            "slot": 4
+          },
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Armure d'étoffe",
+            "itemID": 1029,
+            "price": 300,
+            "rawDescription": "GeneratedTip_Item_1029_Description",
+            "rawDisplayName": "Item_1029_Name",
+            "slot": 5
+          },
+          {
+            "canUse": true,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Brouilleur oraculaire",
+            "itemID": 3364,
+            "price": 0,
+            "rawDescription": "GeneratedTip_Item_3364_Description",
+            "rawDisplayName": "Item_3364_Name",
+            "slot": 6
+          }
+        ],
+        "level": 11,
+        "position": "UTILITY",
+        "rawChampionName": "game_character_displayname_Taric",
+        "rawSkinName": "game_character_displayname_Taric",
+        "respawnTimer": 2.5464324951171875,
+        "riotId": "Taric#BOT",
+        "riotIdGameName": "Taric",
+        "riotIdTagLine": "BOT",
+        "runes": {
+          "keystone": {
+            "displayName": "Poigne de l'immortel",
+            "id": 8437,
+            "rawDescription": "perk_tooltip_GraspOfTheUndying",
+            "rawDisplayName": "perk_displayname_GraspOfTheUndying"
+          },
+          "primaryRuneTree": {
+            "displayName": "Volonté",
+            "id": 8400,
+            "rawDescription": "perkstyle_tooltip_7204",
+            "rawDisplayName": "perkstyle_displayname_7204"
+          },
+          "secondaryRuneTree": {
+            "displayName": "Sorcellerie",
+            "id": 8200,
+            "rawDescription": "perkstyle_tooltip_7202",
+            "rawDisplayName": "perkstyle_displayname_7202"
+          }
+        },
+        "scores": {
+          "assists": 5,
+          "creepScore": 40,
+          "deaths": 9,
+          "kills": 2,
+          "wardScore": 4.9415178298950195
+        },
+        "skinID": 0,
+        "skinName": "Taric",
+        "summonerName": "Bot Taric",
+        "summonerSpells": {
+          "summonerSpellOne": {
+            "displayName": "Saut éclair",
+            "rawDescription": "GeneratedTip_SummonerSpell_SummonerFlash_Description",
+            "rawDisplayName": "GeneratedTip_SummonerSpell_SummonerFlash_DisplayName"
+          },
+          "summonerSpellTwo": {
+            "displayName": "Embrasement",
+            "rawDescription": "GeneratedTip_SummonerSpell_SummonerDot_Description",
+            "rawDisplayName": "GeneratedTip_SummonerSpell_SummonerDot_DisplayName"
+          }
+        },
+        "team": "CHAOS"
+      },
+      {
+        "championName": "Vayne",
+        "isBot": true,
+        "isDead": true,
+        "items": [
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Arc de Doran",
+            "itemID": 1086,
+            "price": 400,
+            "rawDescription": "GeneratedTip_Item_1086_Description",
+            "rawDisplayName": "Item_1086_Name",
+            "slot": 0
+          },
+          {
+            "canUse": true,
+            "consumable": true,
+            "count": 1,
+            "displayName": "Balise de contrôle",
+            "itemID": 2055,
+            "price": 75,
+            "rawDescription": "GeneratedTip_Item_2055_Description",
+            "rawDisplayName": "Item_2055_Name",
+            "slot": 1
+          },
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Foreuse",
+            "itemID": 2021,
+            "price": 400,
+            "rawDescription": "GeneratedTip_Item_2021_Description",
+            "rawDisplayName": "Item_2021_Name",
+            "slot": 2
+          },
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Jambières du berzerker",
+            "itemID": 3006,
+            "price": 300,
+            "rawDescription": "GeneratedTip_Item_3006_Description",
+            "rawDisplayName": "Item_3006_Name",
+            "slot": 3
+          },
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Phage",
+            "itemID": 3044,
+            "price": 350,
+            "rawDescription": "GeneratedTip_Item_3044_Description",
+            "rawDisplayName": "Item_3044_Name",
+            "slot": 4
+          },
+          {
+            "canUse": false,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Arc courbe",
+            "itemID": 1043,
+            "price": 450,
+            "rawDescription": "GeneratedTip_Item_1043_Description",
+            "rawDisplayName": "Item_1043_Name",
+            "slot": 5
+          },
+          {
+            "canUse": true,
+            "consumable": false,
+            "count": 1,
+            "displayName": "Altération divinatoire",
+            "itemID": 3363,
+            "price": 0,
+            "rawDescription": "GeneratedTip_Item_3363_Description",
+            "rawDisplayName": "Item_3363_Name",
+            "slot": 6
+          }
+        ],
+        "level": 12,
+        "position": "TOP",
+        "rawChampionName": "game_character_displayname_Vayne",
+        "rawSkinName": "game_character_displayname_Vayne",
+        "respawnTimer": 12.49494743347168,
+        "riotId": "Vayne#BOT",
+        "riotIdGameName": "Vayne",
+        "riotIdTagLine": "BOT",
+        "runes": {
+          "keystone": {
+            "displayName": "Attaque soutenue",
+            "id": 8005,
+            "rawDescription": "perk_tooltip_PressTheAttack",
+            "rawDisplayName": "perk_displayname_PressTheAttack"
+          },
+          "primaryRuneTree": {
+            "displayName": "Précision",
+            "id": 8000,
+            "rawDescription": "perkstyle_tooltip_7201",
+            "rawDisplayName": "perkstyle_displayname_7201"
+          },
+          "secondaryRuneTree": {
+            "displayName": "Sorcellerie",
+            "id": 8200,
+            "rawDescription": "perkstyle_tooltip_7202",
+            "rawDisplayName": "perkstyle_displayname_7202"
+          }
+        },
+        "scores": {
+          "assists": 1,
+          "creepScore": 130,
+          "deaths": 7,
+          "kills": 1,
+          "wardScore": 4.777851581573486
+        },
+        "skinID": 0,
+        "skinName": "Vayne",
+        "summonerName": "Bot Vayne",
+        "summonerSpells": {
+          "summonerSpellOne": {
+            "displayName": "Saut éclair",
+            "rawDescription": "GeneratedTip_SummonerSpell_SummonerFlash_Description",
+            "rawDisplayName": "GeneratedTip_SummonerSpell_SummonerFlash_DisplayName"
+          },
+          "summonerSpellTwo": {
+            "displayName": "Fantôme",
+            "rawDescription": "GeneratedTip_SummonerSpell_SummonerHaste_Description",
+            "rawDisplayName": "GeneratedTip_SummonerSpell_SummonerHaste_DisplayName"
+          }
+        },
+        "team": "CHAOS"
+      }
+    ],
+    "events": {
+      "Events": [
+        {
+          "EventID": 0,
+          "EventName": "GameStart",
+          "EventTime": 0.052385199815034866
+        },
+        {
+          "EventID": 1,
+          "EventName": "MinionsSpawning",
+          "EventTime": 30.032041549682617
+        },
+        {
+          "Assisters": [],
+          "EventID": 2,
+          "EventName": "ChampionKill",
+          "EventTime": 205.48007202148438,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Lissandra"
+        },
+        {
+          "EventID": 3,
+          "EventName": "FirstBlood",
+          "EventTime": 205.48007202148438,
+          "Recipient": "YtoGoroShi"
+        },
+        {
+          "Assisters": [
+            "YtoGoroShi"
+          ],
+          "EventID": 4,
+          "EventName": "ChampionKill",
+          "EventTime": 253.4049530029297,
+          "KillerName": "Bot Amumu",
+          "VictimName": "Bot Lissandra"
+        },
+        {
+          "Assisters": [
+            "Bot Amumu"
+          ],
+          "EventID": 5,
+          "EventName": "ChampionKill",
+          "EventTime": 272.7724609375,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Diana"
+        },
+        {
+          "Assisters": [
+            "Bot Taric"
+          ],
+          "EventID": 6,
+          "EventName": "ChampionKill",
+          "EventTime": 313.8738708496094,
+          "KillerName": "Bot Jhin",
+          "VictimName": "Bot Rakan"
+        },
+        {
+          "Assisters": [],
+          "EventID": 7,
+          "EventName": "ChampionKill",
+          "EventTime": 383.01226806640625,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Lissandra"
+        },
+        {
+          "Assisters": [],
+          "EventID": 8,
+          "EventName": "ChampionKill",
+          "EventTime": 424.876708984375,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Diana"
+        },
+        {
+          "Assisters": [
+            "Bot Rakan"
+          ],
+          "EventID": 9,
+          "EventName": "ChampionKill",
+          "EventTime": 443.4250793457031,
+          "KillerName": "Bot Amumu",
+          "VictimName": "Bot Jhin"
+        },
+        {
+          "Assisters": [],
+          "EventID": 10,
+          "EventName": "ChampionKill",
+          "EventTime": 462.2970275878906,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Lissandra"
+        },
+        {
+          "Assisters": [
+            "Bot Rakan"
+          ],
+          "EventID": 11,
+          "EventName": "ChampionKill",
+          "EventTime": 478.6678466796875,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Taric"
+        },
+        {
+          "Assisters": [
+            "YtoGoroShi",
+            "Bot Amumu"
+          ],
+          "EventID": 12,
+          "EventName": "ChampionKill",
+          "EventTime": 490.25372314453125,
+          "KillerName": "Bot Rakan",
+          "VictimName": "Bot Diana"
+        },
+        {
+          "Assisters": [
+            "Bot Rakan",
+            "Bot Amumu"
+          ],
+          "EventID": 13,
+          "EventName": "ChampionKill",
+          "EventTime": 492.8461608886719,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Jhin"
+        },
+        {
+          "Assisters": [
+            "Bot Lissandra"
+          ],
+          "EventID": 14,
+          "EventName": "HordeKill",
+          "EventTime": 552.6088256835938,
+          "KillerName": "Bot Diana",
+          "Stolen": "False"
+        },
+        {
+          "Assisters": [
+            "Bot Lissandra"
+          ],
+          "EventID": 15,
+          "EventName": "HordeKill",
+          "EventTime": 567.6535034179688,
+          "KillerName": "Bot Diana",
+          "Stolen": "False"
+        },
+        {
+          "Assisters": [],
+          "EventID": 16,
+          "EventName": "ChampionKill",
+          "EventTime": 574.53857421875,
+          "KillerName": "Turret_TOrder_L0_P3_3795288474_0",
+          "VictimName": "Bot Jhin"
+        },
+        {
+          "Assisters": [
+            "Bot Lissandra"
+          ],
+          "EventID": 17,
+          "EventName": "HordeKill",
+          "EventTime": 576.7296752929688,
+          "KillerName": "Bot Diana",
+          "Stolen": "False"
+        },
+        {
+          "Assisters": [
+            "Bot Amumu"
+          ],
+          "EventID": 18,
+          "EventName": "ChampionKill",
+          "EventTime": 634.7556762695312,
+          "KillerName": "Bot Rakan",
+          "VictimName": "Bot Taric"
+        },
+        {
+          "Assisters": [],
+          "EventID": 19,
+          "EventName": "ChampionKill",
+          "EventTime": 648.779296875,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Lissandra"
+        },
+        {
+          "Assisters": [
+            "Bot Rakan",
+            "Bot Amumu"
+          ],
+          "EventID": 20,
+          "EventName": "ChampionKill",
+          "EventTime": 673.3958740234375,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Diana"
+        },
+        {
+          "Assisters": [],
+          "EventID": 21,
+          "EventName": "ChampionKill",
+          "EventTime": 687.4921875,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Jhin"
+        },
+        {
+          "Assisters": [
+            "Bot Rakan"
+          ],
+          "DragonType": "Water",
+          "EventID": 22,
+          "EventName": "DragonKill",
+          "EventTime": 691.08935546875,
+          "KillerName": "Bot Amumu",
+          "Stolen": "False"
+        },
+        {
+          "Assisters": [],
+          "EventID": 23,
+          "EventName": "ChampionKill",
+          "EventTime": 697.3140869140625,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Taric"
+        },
+        {
+          "EventID": 24,
+          "EventName": "Multikill",
+          "EventTime": 697.3140869140625,
+          "KillStreak": 2,
+          "KillerName": "YtoGoroShi"
+        },
+        {
+          "Assisters": [],
+          "EventID": 25,
+          "EventName": "ChampionKill",
+          "EventTime": 717.6549072265625,
+          "KillerName": "Bot Lissandra",
+          "VictimName": "Bot Amumu"
+        },
+        {
+          "Assisters": [],
+          "EventID": 26,
+          "EventName": "ChampionKill",
+          "EventTime": 719.2981567382812,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Vayne"
+        },
+        {
+          "Assisters": [],
+          "EventID": 27,
+          "EventName": "ChampionKill",
+          "EventTime": 749.8253784179688,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Lissandra"
+        },
+        {
+          "Assisters": [
+            "YtoGoroShi",
+            "Bot Amumu"
+          ],
+          "EventID": 28,
+          "EventName": "ChampionKill",
+          "EventTime": 763.089599609375,
+          "KillerName": "Bot Rakan",
+          "VictimName": "Bot Diana"
+        },
+        {
+          "Assisters": [],
+          "EventID": 29,
+          "EventName": "ChampionKill",
+          "EventTime": 786.210205078125,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Vayne"
+        },
+        {
+          "Assisters": [
+            "Bot Diana"
+          ],
+          "EventID": 30,
+          "EventName": "ChampionKill",
+          "EventTime": 798.6531982421875,
+          "KillerName": "Bot Lissandra",
+          "VictimName": "YtoGoroShi"
+        },
+        {
+          "Assisters": [],
+          "EventID": 31,
+          "EventName": "ChampionKill",
+          "EventTime": 802.8226928710938,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Lissandra"
+        },
+        {
+          "Assisters": [],
+          "EventID": 32,
+          "EventName": "ChampionKill",
+          "EventTime": 812.19921875,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Diana"
+        },
+        {
+          "EventID": 33,
+          "EventName": "Multikill",
+          "EventTime": 812.19921875,
+          "KillStreak": 2,
+          "KillerName": "YtoGoroShi"
+        },
+        {
+          "Assisters": [],
+          "EventID": 34,
+          "EventName": "ChampionKill",
+          "EventTime": 826.3482666015625,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Taric"
+        },
+        {
+          "Assisters": [
+            "Bot Amumu"
+          ],
+          "EventID": 35,
+          "EventName": "ChampionKill",
+          "EventTime": 848.7409057617188,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Vayne"
+        },
+        {
+          "Assisters": [
+            "Bot Vayne"
+          ],
+          "EventID": 36,
+          "EventName": "ChampionKill",
+          "EventTime": 851.2863159179688,
+          "KillerName": "Bot Jhin",
+          "VictimName": "YtoGoroShi"
+        },
+        {
+          "Assisters": [],
+          "EventID": 37,
+          "EventName": "ChampionKill",
+          "EventTime": 866.4950561523438,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Jhin"
+        },
+        {
+          "Assisters": [],
+          "EventID": 38,
+          "EventName": "ChampionKill",
+          "EventTime": 877.9744873046875,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Lissandra"
+        },
+        {
+          "Assisters": [
+            "Bot Jhin"
+          ],
+          "EventID": 39,
+          "EventName": "ChampionKill",
+          "EventTime": 912.0423583984375,
+          "KillerName": "Bot Taric",
+          "VictimName": "YtoGoroShi"
+        },
+        {
+          "Assisters": [
+            "Bot Rakan"
+          ],
+          "EventID": 40,
+          "EventName": "ChampionKill",
+          "EventTime": 925.5648193359375,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Jhin"
+        },
+        {
+          "Assisters": [
+            "Bot Rakan"
+          ],
+          "EventID": 41,
+          "EventName": "ChampionKill",
+          "EventTime": 934.8294067382812,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Taric"
+        },
+        {
+          "EventID": 42,
+          "EventName": "Multikill",
+          "EventTime": 934.8294067382812,
+          "KillStreak": 2,
+          "KillerName": "YtoGoroShi"
+        },
+        {
+          "Assisters": [
+            "Bot Lissandra",
+            "Bot Vayne"
+          ],
+          "EventID": 43,
+          "EventName": "HeraldKill",
+          "EventTime": 958.5576171875,
+          "KillerName": "Bot Diana",
+          "Stolen": "False"
+        },
+        {
+          "Assisters": [
+            "Bot Lissandra",
+            "Bot Diana"
+          ],
+          "EventID": 44,
+          "EventName": "ChampionKill",
+          "EventTime": 963.913818359375,
+          "KillerName": "Bot Vayne",
+          "VictimName": "Bot Amumu"
+        },
+        {
+          "Assisters": [],
+          "EventID": 45,
+          "EventName": "ChampionKill",
+          "EventTime": 1007.5321044921875,
+          "KillerName": "Bot Rakan",
+          "VictimName": "Bot Lissandra"
+        },
+        {
+          "Assisters": [],
+          "EventID": 46,
+          "EventName": "TurretKilled",
+          "EventTime": 1011.1918334960938,
+          "KillerName": "Bot Taric",
+          "TurretKilled": "Turret_TOrder_L0_P3_3795288474_0"
+        },
+        {
+          "EventID": 47,
+          "EventName": "FirstBrick",
+          "EventTime": 1011.1918334960938,
+          "KillerName": "Bot Taric"
+        },
+        {
+          "Assisters": [
+            "Bot Jhin"
+          ],
+          "DragonType": "Air",
+          "EventID": 48,
+          "EventName": "DragonKill",
+          "EventTime": 1024.9178466796875,
+          "KillerName": "Bot Diana",
+          "Stolen": "False"
+        },
+        {
+          "Assisters": [],
+          "EventID": 49,
+          "EventName": "TurretKilled",
+          "EventTime": 1044.728759765625,
+          "KillerName": "Bot Vayne",
+          "TurretKilled": "Turret_TOrder_L2_P3_1509986696_0"
+        },
+        {
+          "Assisters": [
+            "Bot Lissandra",
+            "Bot Taric"
+          ],
+          "EventID": 50,
+          "EventName": "ChampionKill",
+          "EventTime": 1056.76611328125,
+          "KillerName": "Bot Jhin",
+          "VictimName": "Bot Rakan"
+        },
+        {
+          "Assisters": [
+            "Bot Lissandra",
+            "Bot Taric"
+          ],
+          "EventID": 51,
+          "EventName": "ChampionKill",
+          "EventTime": 1063.202880859375,
+          "KillerName": "Bot Jhin",
+          "VictimName": "Bot Amumu"
+        },
+        {
+          "EventID": 52,
+          "EventName": "Multikill",
+          "EventTime": 1063.202880859375,
+          "KillStreak": 2,
+          "KillerName": "Bot Jhin"
+        },
+        {
+          "Assisters": [
+            "Bot Rakan",
+            "Bot Amumu"
+          ],
+          "EventID": 53,
+          "EventName": "ChampionKill",
+          "EventTime": 1069.1046142578125,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Jhin"
+        },
+        {
+          "Assisters": [
+            "Bot Lissandra",
+            "Bot Jhin"
+          ],
+          "EventID": 54,
+          "EventName": "ChampionKill",
+          "EventTime": 1075.924560546875,
+          "KillerName": "Bot Taric",
+          "VictimName": "YtoGoroShi"
+        },
+        {
+          "Acer": "Bot Taric",
+          "AcingTeam": "CHAOS",
+          "EventID": 55,
+          "EventName": "Ace",
+          "EventTime": 1075.924560546875
+        },
+        {
+          "Assisters": [],
+          "EventID": 56,
+          "EventName": "ChampionKill",
+          "EventTime": 1085.997802734375,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Lissandra"
+        },
+        {
+          "Assisters": [],
+          "EventID": 57,
+          "EventName": "ChampionKill",
+          "EventTime": 1093.319091796875,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Taric"
+        },
+        {
+          "EventID": 58,
+          "EventName": "Multikill",
+          "EventTime": 1093.319091796875,
+          "KillStreak": 2,
+          "KillerName": "YtoGoroShi"
+        },
+        {
+          "Assisters": [
+            "YtoGoroShi"
+          ],
+          "EventID": 59,
+          "EventName": "ChampionKill",
+          "EventTime": 1120.5238037109375,
+          "KillerName": "Bot Amumu",
+          "VictimName": "Bot Vayne"
+        },
+        {
+          "Assisters": [
+            "Bot Diana",
+            "Bot Taric"
+          ],
+          "EventID": 60,
+          "EventName": "ChampionKill",
+          "EventTime": 1177.26220703125,
+          "KillerName": "Bot Jhin",
+          "VictimName": "Bot Rakan"
+        },
+        {
+          "Assisters": [],
+          "EventID": 61,
+          "EventName": "ChampionKill",
+          "EventTime": 1185.5888671875,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Jhin"
+        },
+        {
+          "Assisters": [],
+          "EventID": 62,
+          "EventName": "ChampionKill",
+          "EventTime": 1195.2239990234375,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Taric"
+        },
+        {
+          "EventID": 63,
+          "EventName": "Multikill",
+          "EventTime": 1195.2239990234375,
+          "KillStreak": 2,
+          "KillerName": "YtoGoroShi"
+        },
+        {
+          "Assisters": [
+            "Bot Taric"
+          ],
+          "EventID": 64,
+          "EventName": "ChampionKill",
+          "EventTime": 1206.5914306640625,
+          "KillerName": "Bot Lissandra",
+          "VictimName": "YtoGoroShi"
+        },
+        {
+          "Assisters": [
+            "YtoGoroShi"
+          ],
+          "EventID": 65,
+          "EventName": "ChampionKill",
+          "EventTime": 1208.7318115234375,
+          "KillerName": "Bot Amumu",
+          "VictimName": "Bot Lissandra"
+        },
+        {
+          "Assisters": [],
+          "EventID": 66,
+          "EventName": "ChampionKill",
+          "EventTime": 1220.041259765625,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Vayne"
+        },
+        {
+          "Assisters": [],
+          "EventID": 67,
+          "EventName": "ChampionKill",
+          "EventTime": 1236.174560546875,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Jhin"
+        },
+        {
+          "Assisters": [],
+          "EventID": 68,
+          "EventName": "ChampionKill",
+          "EventTime": 1241.09130859375,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Diana"
+        },
+        {
+          "EventID": 69,
+          "EventName": "Multikill",
+          "EventTime": 1241.09130859375,
+          "KillStreak": 2,
+          "KillerName": "YtoGoroShi"
+        },
+        {
+          "Assisters": [],
+          "EventID": 70,
+          "EventName": "ChampionKill",
+          "EventTime": 1255.9451904296875,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Taric"
+        },
+        {
+          "Assisters": [],
+          "EventID": 71,
+          "EventName": "ChampionKill",
+          "EventTime": 1264.674072265625,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Lissandra"
+        },
+        {
+          "EventID": 72,
+          "EventName": "Multikill",
+          "EventTime": 1264.674072265625,
+          "KillStreak": 2,
+          "KillerName": "YtoGoroShi"
+        },
+        {
+          "Assisters": [
+            "YtoGoroShi"
+          ],
+          "EventID": 73,
+          "EventName": "ChampionKill",
+          "EventTime": 1271.8487548828125,
+          "KillerName": "Bot Amumu",
+          "VictimName": "Bot Vayne"
+        },
+        {
+          "Assisters": [],
+          "EventID": 74,
+          "EventName": "TurretKilled",
+          "EventTime": 1282.8311767578125,
+          "KillerName": "Bot Rakan",
+          "TurretKilled": "Turret_TChaos_L0_P3_511845594_0"
+        },
+        {
+          "Assisters": [
+            "Bot Amumu"
+          ],
+          "EventID": 75,
+          "EventName": "ChampionKill",
+          "EventTime": 1316.8809814453125,
+          "KillerName": "Bot Rakan",
+          "VictimName": "Bot Jhin"
+        },
+        {
+          "Assisters": [
+            "Bot Rakan"
+          ],
+          "EventID": 76,
+          "EventName": "ChampionKill",
+          "EventTime": 1329.519775390625,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Lissandra"
+        },
+        {
+          "Assisters": [],
+          "EventID": 77,
+          "EventName": "ChampionKill",
+          "EventTime": 1347.059326171875,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Taric"
+        },
+        {
+          "Assisters": [],
+          "EventID": 78,
+          "EventName": "ChampionKill",
+          "EventTime": 1354.31103515625,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Vayne"
+        },
+        {
+          "EventID": 79,
+          "EventName": "Multikill",
+          "EventTime": 1354.31103515625,
+          "KillStreak": 2,
+          "KillerName": "YtoGoroShi"
+        },
+        {
+          "Assisters": [],
+          "EventID": 80,
+          "EventName": "ChampionKill",
+          "EventTime": 1363.804443359375,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Diana"
+        },
+        {
+          "EventID": 81,
+          "EventName": "Multikill",
+          "EventTime": 1363.804443359375,
+          "KillStreak": 3,
+          "KillerName": "YtoGoroShi"
+        },
+        {
+          "Assisters": [],
+          "EventID": 82,
+          "EventName": "ChampionKill",
+          "EventTime": 1369.3453369140625,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Jhin"
+        },
+        {
+          "EventID": 83,
+          "EventName": "Multikill",
+          "EventTime": 1369.3453369140625,
+          "KillStreak": 4,
+          "KillerName": "YtoGoroShi"
+        },
+        {
+          "Assisters": [],
+          "EventID": 84,
+          "EventName": "ChampionKill",
+          "EventTime": 1376.8709716796875,
+          "KillerName": "YtoGoroShi",
+          "VictimName": "Bot Lissandra"
+        },
+        {
+          "EventID": 85,
+          "EventName": "Multikill",
+          "EventTime": 1376.8709716796875,
+          "KillStreak": 5,
+          "KillerName": "YtoGoroShi"
+        },
+        {
+          "Acer": "YtoGoroShi",
+          "AcingTeam": "ORDER",
+          "EventID": 86,
+          "EventName": "Ace",
+          "EventTime": 1376.8709716796875
+        }
+      ]
+    },
+    "gameData": {
+      "gameMode": "PRACTICETOOL",
+      "gameTime": 1381.7294921875,
+      "mapName": "Map11",
+      "mapNumber": 11,
+      "mapTerrain": "Default"
+    }
+  }
+}

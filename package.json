@@ -1,0 +1,13 @@
+{
+    "name": "tickdash",
+    "version": "1.0.0",
+    "private": true,
+    "description": "Daemon LoL — détecte une game, capture les events GEP Overwolf",
+    "main": "daemon.js",
+    "scripts": {
+        "start": "node --watch daemon.js",
+        "start:once": "node daemon.js",
+        "test:push": "node scripts/test-push.js",
+        "fetch:items": "node scripts/fetch-items-completed.js"
+    }
+}

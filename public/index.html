@@ -1,0 +1,3111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TickDash — GEP Live</title>
+  <style>
+    :root {
+      --bg: #0b0e14;
+      --panel: #121722;
+      --border: #252b3a;
+      --text: #e6eaf2;
+      --muted: #8b93a7;
+      --accent: #c8aa6e;
+      --green: #3dd68c;
+      --red: #f07178;
+      --blue: #59c2ff;
+      --power: #9d8cff;
+      --power-dim: #7c6bb8;
+      --power-up: #6ee7d7;
+      --power-down: #ff9ecd;
+      --team-us: #3dd68c;
+      --team-them: #ff9f43;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; overflow: hidden; }
+    body {
+      margin: 0;
+      font: 14px/1.45 "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, #151b28, var(--panel));
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      overflow-x: auto;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 18px;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .nav-stats {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex: 1;
+      min-width: 0;
+      overflow-x: auto;
+      padding: 4px 0;
+    }
+    .nav-stat {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      white-space: nowrap;
+      font-size: 14px;
+    }
+    .nav-stat .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+    }
+    .nav-stat .value { font-weight: 600; font-size: 15px; }
+    .nav-stat.kda .value .k { color: var(--green); }
+    .nav-stat.kda .value .d { color: var(--red); }
+    .nav-stat.kda .value .a { color: var(--blue); }
+    .nav-stat.player .value { color: var(--text); font-size: 16px; }
+    .nav-stat.player .sub { color: var(--accent); font-weight: 500; font-size: 14px; }
+    .nav-divider {
+      width: 1px;
+      height: 22px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+    .nav-end {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+      margin-left: auto;
+    }
+    .enemy-nav {
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+      background: #0e121a;
+      display: flex;
+      align-items: stretch;
+      gap: 14px;
+      overflow-x: auto;
+      flex-shrink: 0;
+      min-height: 88px;
+    }
+    .enemy-nav-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      padding-right: 4px;
+    }
+    .enemy-nav-label strong { color: #ffaaaa; font-weight: 700; font-size: 13px; }
+    .enemy-nav-timers {
+      display: flex;
+      align-items: stretch;
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
+      width: 100%;
+    }
+    .enemy-chip {
+      flex: 1 1 0;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 10px 8px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #141a26;
+      text-align: center;
+    }
+    .enemy-chip.alive {
+      border-color: #2a4a3a;
+      background: #101820;
+    }
+    .enemy-chip.dead {
+      border-color: #5a3038;
+      background: linear-gradient(180deg, #1a1218, #141018);
+    }
+    .enemy-chip .champ {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .enemy-chip .role {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+    .enemy-chip .timer {
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 30px;
+      font-weight: 800;
+      color: var(--red);
+      line-height: 1;
+      margin-top: 2px;
+    }
+    .enemy-chip .timer.soon { color: var(--accent); }
+    .enemy-chip .timer.up { font-size: 15px; color: var(--green); font-weight: 700; }
+    .enemy-nav-wait {
+      font-size: 14px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+    }
+    .enemy-nav-summary {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      padding-left: 4px;
+    }
+    .pill {
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: #1a2130;
+      border: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .pill.ok { color: var(--green); border-color: #2a5c44; }
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      padding: 8px 10px;
+      max-width: none;
+      margin: 0;
+    }
+    #app {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .live-row {
+      display: flex;
+      gap: 12px;
+      align-items: stretch;
+      min-width: 0;
+      flex: 1;
+      min-height: 0;
+    }
+    .live-row .card {
+      flex: 1;
+      min-width: 0;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .live-row .card .card-body.scroll-pane {
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      max-height: none;
+    }
+    .live-row .card.events-col .events-panel .card-body.scroll-pane {
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      max-height: none;
+    }
+    .live-row .card .card-body.scroll-pane > .scroll-inner {
+      min-height: min-content;
+    }
+    @media (max-width: 1100px) {
+      .live-row { flex-direction: column; }
+      .live-row .card .card-body { max-height: none; }
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .card h2 {
+      margin: 0;
+      padding: 10px 14px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      background: #0f131c;
+    }
+    .card-body { padding: 8px 10px; }
+    .player-name { font-size: 22px; font-weight: 600; }
+    .champion { color: var(--accent); font-size: 16px; margin-top: 2px; }
+    .kda .k { color: var(--green); }
+    .kda .d { color: var(--red); }
+    .kda .a { color: var(--blue); }
+    .camp-list { display: flex; flex-direction: column; gap: 6px; }
+    .camp-neutral-block { margin-bottom: 4px; }
+    .camp-river-block { margin-top: 10px; }
+    .camp-jungle-row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .camp-jungle-row .camp-column {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    @media (max-width: 900px) {
+      .camp-jungle-row { flex-direction: column; }
+    }
+    .camp-group-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin: 4px 0 2px;
+    }
+    .camp-group-title.blue { color: #6eb5ff; }
+    .camp-group-title.red { color: #ff8a8a; }
+    .camp {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 8px 10px;
+      background: #0d1119;
+      border-radius: 6px;
+      font-size: 13px;
+    }
+    .camp .dot {
+      width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; flex-shrink: 0;
+    }
+    .camp .dot.alive { background: var(--green); box-shadow: 0 0 6px var(--green); }
+    .camp .dot.dead { background: var(--red); opacity: 0.7; }
+    .camp-left { display: flex; align-items: center; min-width: 0; gap: 8px; }
+    .camp-name { font-weight: 600; }
+    .side-badge {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #1a2130;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .side-badge.blue { color: #8ec5ff; border: 1px solid #2a4a6a; }
+    .side-badge.red { color: #ffaaaa; border: 1px solid #6a3a3a; }
+    .side-badge.neutral { color: var(--muted); border: 1px solid #2a3144; }
+    .camp-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 2px;
+      font-size: 11px;
+      text-align: right;
+    }
+    .camp-clock-hint {
+      font-size: 11px;
+      color: var(--muted);
+      padding: 6px 8px;
+      background: #0d1119;
+      border-radius: 6px;
+      margin-bottom: 4px;
+    }
+    .camp-respawn {
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1.1;
+    }
+    .camp-respawn.soon { color: var(--green); }
+    .camp-event {
+      color: var(--accent);
+      font-family: ui-monospace, Consolas, monospace;
+    }
+    .camp-event.cleared { color: var(--red); }
+    .camp-event.up { color: var(--green); }
+    .camp-status { color: var(--muted); }
+    .events {
+      overflow: hidden;
+      font-size: 12px;
+    }
+    .card.events-col {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .strongest-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      flex: 0 0 auto;
+      border-bottom: 1px solid var(--border);
+    }
+    .strongest-panel {
+      flex: 0 0 auto;
+      background: linear-gradient(180deg, #141a28, #0f131c);
+    }
+    .strongest-row .strongest-panel { border-bottom: none; }
+    .strongest-panel + .strongest-panel { border-left: 1px solid var(--border); }
+    .strongest-panel h2 {
+      margin: 0;
+      padding: 10px 14px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-bottom: 1px solid var(--border);
+    }
+    .strongest-panel.opponent h2 {
+      color: #ffaaaa;
+      background: #120f18;
+    }
+    .strongest-panel.ally h2 {
+      color: #aaccff;
+      background: #0f1418;
+    }
+    .strongest-body { padding: 6px 8px; }
+    .strongest-wait { font-size: 12px; color: var(--muted); }
+    .strongest-hero { display: flex; flex-direction: column; gap: 6px; }
+    .strongest-main {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .strongest-champ {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .strongest-role {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      padding: 2px 8px;
+      border: 1px solid #4a3038;
+      border-radius: 4px;
+    }
+    .strongest-dead {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--red);
+      background: #281518;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .strongest-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .strongest-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 8px;
+      background: #0d1119;
+      border-radius: 8px;
+      border: 1px solid #1a2030;
+    }
+    .strongest-stat.highlight {
+      border-color: #5a4040;
+      background: linear-gradient(180deg, #1a1218, #0d1119);
+    }
+    .strongest-stat .lbl {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    .strongest-stat .val {
+      font-size: 18px;
+      font-weight: 800;
+      font-family: ui-monospace, Consolas, monospace;
+      color: var(--text);
+    }
+    .strongest-stat.highlight .val {
+      color: var(--accent);
+      font-size: 28px;
+      font-weight: 800;
+      text-shadow: 0 0 12px rgba(200, 170, 110, 0.4);
+    }
+    .strongest-stat .sub { font-size: 10px; color: var(--muted); }
+    .strongest-rank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .strongest-other {
+      padding: 3px 8px;
+      background: #0d1119;
+      border-radius: 4px;
+      border: 1px solid #1a2030;
+    }
+    .strongest-other small {
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 12px;
+      text-shadow: 0 0 8px rgba(200, 170, 110, 0.35);
+    }
+    .power-val {
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 13px;
+      font-family: ui-monospace, Consolas, monospace;
+      text-shadow: 0 0 8px rgba(200, 170, 110, 0.35);
+    }
+    .end-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(6, 8, 12, 0.92);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      overflow: auto;
+    }
+    .end-overlay[hidden] { display: none; }
+    .end-card {
+      width: min(920px, 100%);
+      background: #101622;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+    }
+    .end-head {
+      padding: 20px 24px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .end-head.victory { background: linear-gradient(180deg, #152818, #101622); }
+    .end-head.defeat { background: linear-gradient(180deg, #281518, #101622); }
+    .end-title {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .end-head.victory .end-title { color: #7fd4a8; }
+    .end-head.defeat .end-title { color: #ff9a9a; }
+    .end-sub { font-size: 13px; color: var(--muted); margin-top: 6px; }
+    .end-stats {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .end-stat .lbl { font-size: 10px; text-transform: uppercase; color: var(--muted); }
+    .end-stat .val { font-size: 22px; font-weight: 800; color: var(--accent); }
+    .end-stat .val.benefit { color: var(--green); }
+    .end-stat .val.deficit { color: var(--red); }
+    .end-teams { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 16px; }
+    .end-team h3 {
+      margin: 0 0 8px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+    .end-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto auto;
+      gap: 8px;
+      align-items: center;
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+    .end-row.me { background: #171322; outline: 1px solid #4a3058; }
+    .end-row .mix { font-size: 16px; font-weight: 800; color: var(--accent); }
+    .end-close {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      border: 0;
+      border-top: 1px solid var(--border);
+      background: #141a28;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .end-close:hover { color: var(--text); background: #1a2130; }
+    .strongest-proxy {
+      font-size: 10px;
+      color: var(--muted);
+      text-align: center;
+      font-style: italic;
+    }
+    .events-panel {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .events-panel h2 {
+      margin: 0;
+      padding: 10px 14px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      background: #0f131c;
+    }
+    .event {
+      padding: 5px 8px;
+      border-bottom: 1px solid #1a2030;
+      display: grid;
+      grid-template-columns: 52px 64px 1fr;
+      gap: 6px;
+      align-items: center;
+    }
+    .event .t { color: var(--muted); font-family: ui-monospace, Consolas, monospace; font-size: 11px; }
+    .event-tag {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 3px 6px;
+      border-radius: 4px;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .event-tag.kill { background: #152818; color: var(--green); }
+    .event-tag.death { background: #281518; color: var(--red); }
+    .event-tag.assist { background: #152028; color: var(--blue); }
+    .event-tag.obj { background: #1a2130; color: var(--accent); }
+    .event-tag.info { background: #1a1a22; color: var(--muted); }
+    .event-tag.ulti { background: #2a1a3a; color: #c89bff; }
+    .event-body { min-width: 0; }
+    .event-desc { color: var(--text); line-height: 1.35; }
+    .event-actor {
+      font-size: 12px;
+      color: var(--accent);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+    .event-actor.muted { color: var(--muted); font-weight: 500; }
+    .event-gold {
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 11px;
+      font-weight: 600;
+      margin-top: 3px;
+      display: flex;
+      align-items: baseline;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+    .event-gold-lbl {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .event-gold.up { color: var(--green); }
+    .event-gold.down { color: var(--red); }
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      padding: 5px 10px;
+      border-bottom: 1px solid var(--border);
+      font-size: 10px;
+      color: var(--muted);
+    }
+    label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+    .waiting {
+      padding: 48px 24px;
+      text-align: center;
+      color: var(--muted);
+    }
+    .right-col { display: flex; flex-direction: column; gap: 10px; flex: 1; min-height: 0; }
+    .camp-state {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      padding: 3px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .camp-state.alive { background: #152818; color: var(--green); }
+    .camp-state.dead { background: #281518; color: var(--red); }
+    .camp-timer { font-family: ui-monospace, Consolas, monospace; font-size: 11px; color: var(--accent); }
+    .camp-detail { font-size: 11px; color: var(--muted); white-space: nowrap; }
+    .money-col {
+      flex: 1;
+      min-width: 0;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .money-col .card.money-card {
+      flex: 1;
+      min-height: 0;
+    }
+    .target-panel {
+      flex: 0 0 auto;
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid transparent;
+      background:
+        linear-gradient(var(--panel), var(--panel)) padding-box,
+        linear-gradient(
+          120deg,
+          #3a3050 0%,
+          #6b5a8e 18%,
+          #c4b5fd 35%,
+          #e8d5a3 50%,
+          #c8aa6e 65%,
+          #c4b5fd 82%,
+          #3a3050 100%
+        ) border-box;
+      background-size: 100% 100%, 220% 220%;
+      animation: target-border-shimmer 2.6s ease-in-out infinite;
+    }
+    @keyframes target-border-shimmer {
+      0%, 100% {
+        background-position: 0 0, 0% 50%;
+        box-shadow:
+          0 0 6px rgba(196, 181, 253, 0.15),
+          inset 0 0 0 1px rgba(196, 181, 253, 0.08);
+      }
+      50% {
+        background-position: 0 0, 100% 50%;
+        box-shadow:
+          0 0 14px rgba(200, 170, 110, 0.35),
+          0 0 22px rgba(196, 181, 253, 0.2),
+          inset 0 0 0 1px rgba(232, 213, 163, 0.25);
+      }
+    }
+    .target-panel h2 {
+      margin: 0;
+      padding: 10px 14px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #c4b5fd;
+      border-bottom: 1px solid var(--border);
+      background: #12101a;
+    }
+    .target-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+    .target-wait { font-size: 12px; color: var(--muted); }
+    .target-role-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .target-pill {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid #3a3050;
+      background: #171322;
+      color: #ddd6fe;
+    }
+    .target-pill.role { color: #aaccff; border-color: #2a3a50; background: #101620; }
+    .target-note { font-size: 11px; color: var(--muted); line-height: 1.35; }
+    .target-list { display: flex; flex-direction: column; gap: 8px; }
+    .target-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 8px 10px;
+      align-items: center;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: #0f131c;
+      border: 1px solid #222836;
+    }
+    .target-row.primary { border-color: #4a3058; background: linear-gradient(90deg, #16101a, #0f131c); }
+    .target-priority {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      text-transform: uppercase;
+      min-width: 28px;
+    }
+    .target-main { min-width: 0; }
+    .target-main .lane {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+    .target-main .champ {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.15;
+    }
+    .target-main .sub { font-size: 10px; color: var(--muted); }
+    .target-meta {
+      text-align: right;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      font-family: ui-monospace, Consolas, monospace;
+    }
+    .target-meta.dead { color: var(--red); }
+    .money-panel { display: flex; flex-direction: column; gap: 8px; }
+    .gold-delta-hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 14px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #0f141e;
+      text-align: center;
+    }
+    .gold-delta-hero.benefit {
+      border-color: #2a5c44;
+      background: linear-gradient(180deg, #101820, #0d1612);
+    }
+    .gold-delta-hero.deficit {
+      border-color: #5a3038;
+      background: linear-gradient(180deg, #1a1014, #140d10);
+    }
+    .gold-delta-hero.even { border-color: #2a3144; }
+    .gold-delta-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+    .gold-delta-hero.benefit .gold-delta-label { color: #7fd4a8; }
+    .gold-delta-hero.deficit .gold-delta-label { color: #ff9a9a; }
+    .gold-delta-value {
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .gold-delta-hero.benefit .gold-delta-value { color: var(--green); }
+    .gold-delta-hero.deficit .gold-delta-value { color: var(--red); }
+    .gold-delta-hero.even .gold-delta-value { color: var(--muted); font-size: 18px; }
+    .gold-delta-sub {
+      font-size: 11px;
+      color: var(--muted);
+      font-family: ui-monospace, Consolas, monospace;
+    }
+    .nav-stat.gold-delta .value.benefit { color: var(--green); }
+    .nav-stat.gold-delta .value.deficit { color: var(--red); }
+    .nav-stat.gold-delta .value {
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 20px;
+      font-weight: 800;
+    }
+    .nav-stat.gold-delta .label { color: #c8aa6e; font-weight: 700; }
+    .nav-stat.power .value {
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--power);
+      text-shadow: 0 0 14px rgba(157, 140, 255, 0.45);
+    }
+    .nav-stat.power .label { color: var(--power-dim); font-weight: 700; }
+    .nav-stat.power-delta .value.power-up { color: var(--power-up); }
+    .nav-stat.power-delta .value.power-down { color: var(--power-down); }
+    .nav-stat.power-delta .value.even { color: var(--muted); }
+    .nav-stat.power-delta .value {
+      font-size: 18px;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      font-family: ui-monospace, Consolas, monospace;
+    }
+    .nav-stat.power-delta .label { color: var(--power-dim); font-weight: 700; }
+    .nav-stat.team-power .value {
+      font-size: 15px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      font-family: ui-monospace, Consolas, monospace;
+    }
+    .nav-stat.team-power .team-power-us { color: var(--team-us); }
+    .nav-stat.team-power .team-power-them { color: var(--team-them); }
+    .nav-stat.team-power .label { color: var(--power-dim); font-weight: 700; }
+    .money-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--muted);
+      padding-bottom: 4px;
+      border-bottom: 1px solid #1a2030;
+    }
+    .money-note-inline { font-size: 11px; color: var(--muted); }
+    .money-time { font-family: ui-monospace, Consolas, monospace; }
+    .money-team { display: flex; flex-direction: column; gap: 6px; }
+    .money-team-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 2px;
+    }
+    .money-team-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .money-team-label.blue { color: #6eb5ff; }
+    .money-team-label.red { color: #ff8a8a; }
+    .money-team-total {
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .money-row {
+      display: grid;
+      grid-template-columns: minmax(72px, 30%) 1fr 38px 24px;
+      gap: 6px;
+      align-items: center;
+      font-size: 11px;
+    }
+    .money-row.me .money-name { color: var(--accent); font-weight: 700; }
+    .money-meta { min-width: 0; line-height: 1.25; }
+    .money-champ {
+      display: block;
+      font-weight: 700;
+      font-size: 11px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .money-name {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .money-bar-wrap { min-width: 0; }
+    .money-bar-track {
+      height: 16px;
+      background: #0a0d14;
+      border-radius: 3px;
+      overflow: hidden;
+      border: 1px solid #1a2030;
+    }
+    .money-bar-fill {
+      height: 100%;
+      min-width: 2px;
+      border-radius: 2px;
+      transition: width 0.45s ease;
+    }
+    .money-bar-fill.blue {
+      background: linear-gradient(90deg, #1a3a5c, #4a9eff);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+    }
+    .money-bar-fill.red {
+      background: linear-gradient(90deg, #5c1a1a, #ff6b6b);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+    }
+    .money-row.me .money-bar-fill { outline: 1px solid var(--accent); outline-offset: -1px; }
+    .money-val {
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 10px;
+      font-weight: 700;
+      text-align: right;
+      color: var(--text);
+    }
+    .money-completed {
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 11px;
+      font-weight: 700;
+      text-align: right;
+      color: var(--accent);
+    }
+    .money-note {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 4px;
+      line-height: 1.3;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-brand">
+      <h1>TickDash</h1>
+      <span class="pill" id="conn">connecting…</span>
+      <span class="pill" id="ow-pill">OW —</span>
+    </div>
+    <nav class="nav-stats" id="nav-stats"></nav>
+    <div class="nav-end">
+      <span class="pill" id="events-pill">0 events</span>
+      <span class="pill" id="session-pill">—</span>
+    </div>
+  </header>
+
+  <nav class="enemy-nav" id="enemy-nav">
+    <span class="enemy-nav-label"><strong>Ennemis</strong><br/>respawn</span>
+    <div class="enemy-nav-timers" id="enemy-nav-timers">
+      <span class="enemy-nav-wait">Live Client (:2999)…</span>
+    </div>
+    <span class="enemy-nav-summary" id="enemy-nav-summary"></span>
+  </nav>
+
+  <main id="app">
+    <div class="waiting">Chargement GEP…</div>
+  </main>
+  <div id="end-overlay" class="end-overlay" hidden></div>
+
+  <script>
+    const EVENT_SKIP = new Set(["welcome_rift", "minions_spawn", "match", "matchStart"]);
+    let lastInfo = {};
+    let lastLive = null;
+    let lastState = null;
+    let lastStatus = null;
+    let lastEventsCache = [];
+    let offlineStreak = 0;
+    let tickSessionId = null;
+    let maxGameTimeSeen = 0;
+    const matchStartBySession = {};
+    const campKillMemory = {};
+    const ultFramePrev = {};
+    const ultFrameLastFired = {};
+    let matchStartWallMs = null;
+    let endSnapshot = null;
+    let endSnapshotDismissed = false;
+    let itemsCompletedDico = null;
+    let itemsCompletedPatch = null;
+    const END_SNAPSHOT_KEY = "tickdash:endSnapshot";
+    const MAX_EVENT_ROWS = 6;
+
+    /** West jungle = Blue side team, East jungle = Red side team (Summoner's Rift) */
+    function parseCamp(rawName) {
+      const name = rawName || "?";
+      const objectifs = ["Dragon", "Baron", "VoidGrubs", "Rift Herald"];
+      if (objectifs.includes(name)) {
+        return { label: name, side: "Objectif", group: "objectifs", sideClass: "neutral" };
+      }
+      if (name.includes("Scuttle")) {
+        const short = name.replace("Scuttle Crab River ", "Scuttle ");
+        return { label: short, side: "River", group: "river", sideClass: "neutral" };
+      }
+      if (name.endsWith(" West")) {
+        return {
+          label: name.replace(" West", ""),
+          side: "Blue side",
+          group: "blue",
+          sideClass: "blue",
+        };
+      }
+      if (name.endsWith(" East")) {
+        return {
+          label: name.replace(" East", ""),
+          side: "Red side",
+          group: "red",
+          sideClass: "red",
+        };
+      }
+      return { label: name, side: "—", group: "objectifs", sideClass: "neutral" };
+    }
+
+    const GROUP_LABELS = {
+      blue: "Blue side jungle",
+      red: "Red side jungle",
+      river: "River",
+      objectifs: "Objectifs",
+    };
+
+    /** Respawn standard SR (secondes) — estimation si camp mort */
+    const CAMP_RESPAWN_SEC = {
+      Blue: 300, Red: 300,
+      Gromp: 135, Krugs: 135, Krug: 135,
+      Raptors: 135, Wolves: 135,
+      Dragon: 300, Baron: 360,
+      "VoidGrubs": 240, "Rift Herald": 360,
+    };
+
+    const CAMP_FIRST_SPAWN_SEC = {
+      Dragon: 300,
+      "VoidGrubs": 300,
+      "Rift Herald": 900,
+      Baron: 1200,
+    };
+
+    const OBJECTIVE_NAMES = new Set(["Dragon", "Baron", "VoidGrubs", "Rift Herald"]);
+
+    function rememberCampKill(sessionId, key, at) {
+      if (!sessionId || !key || !at) return;
+      campKillMemory[`${sessionId}:${key}`] = at;
+    }
+
+    function recallCampKill(sessionId, key) {
+      if (!sessionId || !key) return null;
+      return campKillMemory[`${sessionId}:${key}`] || null;
+    }
+
+    function respawnSecForCamp(label) {
+      for (const [key, sec] of Object.entries(CAMP_RESPAWN_SEC)) {
+        if (label.includes(key)) return sec;
+      }
+      if (label.includes("Scuttle")) return 150;
+      return 135;
+    }
+
+    function firstSpawnSecForCamp(label) {
+      for (const [key, sec] of Object.entries(CAMP_FIRST_SPAWN_SEC)) {
+        if (label.includes(key)) return sec;
+      }
+      return null;
+    }
+
+    function ensureBaronCamp(camps, nowGame) {
+      if (!camps || typeof camps !== "object") camps = {};
+      const hasBaron = Object.values(camps).some((c) => c?.name === "Baron");
+      if (hasBaron || nowGame == null) return camps;
+      return {
+        ...camps,
+        jungle_camp_baron_syn: { name: "Baron", alive: false, vision: false, icon_status: "0" },
+      };
+    }
+
+    function sortObjectifs(items) {
+      const order = { Baron: 0, Dragon: 1, "Rift Herald": 2, VoidGrubs: 3 };
+      return items.sort((a, b) => {
+        const oa = order[a.parsed.label] ?? 9;
+        const ob = order[b.parsed.label] ?? 9;
+        if (oa !== ob) return oa - ob;
+        return a.parsed.label.localeCompare(b.parsed.label);
+      });
+    }
+
+    function lcFresh(info, state) {
+      const ow = state?.ow || {};
+      if (ow.liveClient) return true;
+      const polledAt = info.tickdash?.polledAt || lastLive?.polledAt;
+      if (!polledAt) return false;
+      const pollMs = Date.parse(polledAt);
+      return Number.isFinite(pollMs) && Date.now() - pollMs < 5000;
+    }
+
+    function readLcGameTime(info) {
+      const td = info.tickdash || {};
+      let gt = Number(td.gameTime);
+      let polledAt = td.polledAt;
+      if (!Number.isFinite(gt) && lastLive?.ok && Number.isFinite(Number(lastLive.gameTime))) {
+        gt = Number(lastLive.gameTime);
+        polledAt = lastLive.polledAt;
+      }
+      if (!Number.isFinite(gt)) return null;
+      return { gt, polledAt };
+    }
+
+    function liveClientGameSec(info, state) {
+      const lc = readLcGameTime(info);
+      if (!lc) return null;
+      if (!lcFresh(info, state)) return lc.gt;
+      if (lc.polledAt) {
+        const pollMs = Date.parse(lc.polledAt);
+        if (Number.isFinite(pollMs)) return lc.gt + (Date.now() - pollMs) / 1000;
+      }
+      return lc.gt;
+    }
+
+    function rememberMatchStart(sessionId, events, state) {
+      if (!sessionId) return;
+      if (matchStartBySession[sessionId]) return;
+      if (state?.matchStartAt) {
+        const ms = Date.parse(state.matchStartAt);
+        if (Number.isFinite(ms)) matchStartBySession[sessionId] = ms;
+        return;
+      }
+      for (const e of events) {
+        if (e.type !== "event") continue;
+        if (e.name === "matchStart" || (e.feature === "match" && e.name === "match")) {
+          const ms = Date.parse(e.at);
+          if (Number.isFinite(ms)) {
+            matchStartBySession[sessionId] = ms;
+            return;
+          }
+        }
+      }
+    }
+
+    function wallClockGameSec(events, status, state) {
+      const sid = status?.session?.id;
+      if (sid && matchStartBySession[sid]) {
+        return Math.max(0, (Date.now() - matchStartBySession[sid]) / 1000);
+      }
+      if (matchStartWallMs) {
+        return Math.max(0, (Date.now() - matchStartWallMs) / 1000);
+      }
+      const started = status?.session?.startedAt;
+      if (started) {
+        const ms = Date.parse(started);
+        if (Number.isFinite(ms)) return Math.max(0, (Date.now() - ms) / 1000);
+      }
+      return null;
+    }
+
+    function maxGameTimeFromEvents(events) {
+      let max = null;
+      for (const e of events) {
+        if (e.type !== "info" || e.feature !== "tickdash") continue;
+        const gt = Number(e.info?.gameTime ?? e.info?.economy?.gameTime);
+        if (Number.isFinite(gt)) max = max == null ? gt : Math.max(max, gt);
+      }
+      return max;
+    }
+
+    function gameClockSec(info, state) {
+      return liveClientGameSec(info, state);
+    }
+
+    function syncMatchStart(events) {
+      if (matchStartWallMs) return;
+      for (const e of events) {
+        if (e.type !== "event") continue;
+        if (e.name === "matchStart" || (e.feature === "match" && e.name === "match")) {
+          matchStartWallMs = Date.parse(e.at);
+          return;
+        }
+      }
+    }
+
+    function fmtGameTime(sec) {
+      if (sec == null || !Number.isFinite(sec)) return "—";
+      const s = Math.max(0, Math.floor(sec));
+      return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+    }
+
+    function currentGameSec(info, events, status, state) {
+      rememberMatchStart(status?.session?.id, events, state);
+      const lc = liveClientGameSec(info, state);
+      const wall = wallClockGameSec(events, status, state);
+      const hist = maxGameTimeFromEvents(events);
+
+      let best = lc;
+      if (wall != null && (best == null || (!lcFresh(info, state) && wall > best))) best = wall;
+      if (hist != null && (best == null || hist > best)) best = hist;
+      if (wall != null && best != null) best = Math.max(best, wall);
+      if (lc != null && best != null && lcFresh(info, state)) best = Math.max(best, lc);
+
+      if (best != null) {
+        maxGameTimeSeen = Math.max(maxGameTimeSeen, best);
+        return maxGameTimeSeen;
+      }
+      syncMatchStart(events);
+      if (matchStartWallMs) {
+        const t = Math.max(0, (Date.now() - matchStartWallMs) / 1000);
+        maxGameTimeSeen = Math.max(maxGameTimeSeen, t);
+        return maxGameTimeSeen;
+      }
+      return maxGameTimeSeen || null;
+    }
+
+    function gameClockLive(info, state) {
+      return lcFresh(info, state);
+    }
+
+    function eventGameSec(isoAt, info, events) {
+      if (!isoAt) return null;
+      const eventMs = Date.parse(isoAt);
+      if (!Number.isFinite(eventMs)) return null;
+      const nowGame = currentGameSec(info, events, lastStatus, lastState);
+      const polledAt = info.tickdash?.polledAt || lastLive?.polledAt;
+      if (nowGame != null && polledAt) {
+        const pollMs = Date.parse(polledAt);
+        if (Number.isFinite(pollMs)) {
+          const t = nowGame + (eventMs - pollMs) / 1000;
+          if (t >= 0) return t;
+        }
+      }
+      if (nowGame != null) {
+        const t = nowGame - (Date.now() - eventMs) / 1000;
+        if (t >= 0) return t;
+      }
+      syncMatchStart(events);
+      if (matchStartWallMs) {
+        const t = (eventMs - matchStartWallMs) / 1000;
+        if (t >= 0) return t;
+      }
+      return null;
+    }
+
+    function estimateGameTimeAt(isoAt, info, events) {
+      return eventGameSec(isoAt, info, events);
+    }
+
+    function fmtEventTime(iso, info, events) {
+      const game = eventGameSec(iso, info, events);
+      return game != null ? fmtGameTime(game) : "—";
+    }
+
+    function buildCampEvents(events, sessionId) {
+      const lastCleared = {};
+      const lastDeadAt = {};
+      const lastAliveAt = {};
+      const seenAlive = {};
+      const chronological = [...events].reverse();
+      for (const e of chronological) {
+        if (e.type !== "info" || e.feature !== "jungle_camps" || !e.key) continue;
+        const val = typeof e.value === "object" ? e.value : {};
+        const alive = val.alive === true || val.alive === "true";
+        if (alive) {
+          seenAlive[e.key] = true;
+          lastAliveAt[e.key] = e.at;
+        } else {
+          lastDeadAt[e.key] = e.at;
+          if (seenAlive[e.key]) lastCleared[e.key] = e.at;
+        }
+      }
+      for (const [key, at] of Object.entries(lastCleared)) {
+        rememberCampKill(sessionId, key, at);
+      }
+      return { lastCleared, lastDeadAt, lastAliveAt, seenAlive };
+    }
+
+    function campTimerHtml(remain, respawnAt, label) {
+      if (remain > 0) {
+        return `<span class="camp-respawn">${fmtGameTime(remain)}</span><span class="camp-detail">${label} ${fmtGameTime(respawnAt)}</span>`;
+      }
+      return `<span class="camp-respawn soon">UP!</span><span class="camp-detail">${label} ${fmtGameTime(respawnAt)}</span>`;
+    }
+
+    function campDeadTimer(key, camp, campEvents, info, events) {
+      const parsed = parseCamp(camp.name);
+      const sessionId = lastStatus?.session?.id;
+      const nowGame = currentGameSec(info, events, lastStatus, lastState);
+      if (nowGame == null) return `<span class="camp-detail">Mort · timer —</span>`;
+
+      const firstSpawn = firstSpawnSecForCamp(parsed.label);
+      if (firstSpawn != null && !campEvents.seenAlive[key] && nowGame < firstSpawn) {
+        const remain = Math.ceil(firstSpawn - nowGame);
+        return campTimerHtml(remain, firstSpawn, "spawn ·");
+      }
+
+      let clearedAt =
+        campEvents.lastCleared[key] ||
+        recallCampKill(sessionId, key) ||
+        (OBJECTIVE_NAMES.has(parsed.label) ? campEvents.lastDeadAt[key] : null);
+
+      if (!clearedAt) return `<span class="camp-detail">Mort · clear inconnu</span>`;
+
+      const clearGame = eventGameSec(clearedAt, info, events);
+      if (clearGame == null) return `<span class="camp-detail">Mort · timer —</span>`;
+
+      rememberCampKill(sessionId, key, clearedAt);
+      const respawnAt = clearGame + respawnSecForCamp(parsed.label);
+      const remain = Math.ceil(respawnAt - nowGame);
+      return campTimerHtml(remain, respawnAt, "respawn · UP");
+    }
+
+    function campRow(key, camp, campEvents, info, events) {
+      const parsed = parseCamp(camp.name);
+      const alive = camp.alive === true || camp.alive === "true";
+      const timerHtml = alive
+        ? `<span class="camp-detail">En vie</span>`
+        : campDeadTimer(key, camp, campEvents, info, events);
+      return `<div class="camp" data-camp-key="${key}">
+        <div class="camp-left">
+          <span class="dot ${alive ? "alive" : "dead"}"></span>
+          <span class="camp-name">${parsed.label}</span>
+          <span class="side-badge ${parsed.sideClass}">${parsed.side}</span>
+        </div>
+        <div class="camp-right">
+          <span class="camp-state ${alive ? "alive" : "dead"}">${alive ? "VIVANT" : "MORT"}</span>
+          ${timerHtml}
+        </div>
+      </div>`;
+    }
+
+    function campGroupHtml(groupKey, items, campEvents, info, events) {
+      if (!items.length) return "";
+      const titleClass = groupKey === "blue" ? "blue" : groupKey === "red" ? "red" : "";
+      const rows = items
+        .map(({ key, camp }) => campRow(key, camp, campEvents, info, events))
+        .join("");
+      return `<div class="camp-group-title ${titleClass}">${GROUP_LABELS[groupKey]}</div>${rows}`;
+    }
+
+    function campsHtml(camps, events, info) {
+      syncMatchStart(events);
+      const campEvents = buildCampEvents(events, lastStatus?.session?.id);
+      const nowGame = currentGameSec(info, events, lastStatus, lastState);
+      const live = gameClockLive(info, lastState);
+      camps = ensureBaronCamp(camps, nowGame);
+
+      if (!camps || !Object.keys(camps).length) {
+        return "<div class='waiting'>Pas encore de jungle camps</div>";
+      }
+
+      const grouped = { blue: [], red: [], river: [], objectifs: [] };
+
+      for (const [key, camp] of Object.entries(camps)) {
+        const parsed = parseCamp(camp.name);
+        grouped[parsed.group].push({ key, camp, parsed });
+      }
+
+      for (const g of Object.keys(grouped)) {
+        if (g === "objectifs") sortObjectifs(grouped[g]);
+        else grouped[g].sort((a, b) => a.parsed.label.localeCompare(b.parsed.label));
+      }
+
+      const clockHint = nowGame != null
+        ? `<div class="camp-clock-hint">Heure de jeu <strong>${fmtGameTime(nowGame)}</strong>${live ? "" : " ~estimée"} · gros chiffre = respawn</div>`
+        : `<div class="camp-clock-hint">Sync game… (redémarre le daemon si bloqué)</div>`;
+
+      const objectifsBlock = grouped.objectifs.length
+        ? campGroupHtml("objectifs", grouped.objectifs, campEvents, info, events)
+        : "";
+
+      const jungleRow =
+        grouped.blue.length || grouped.red.length
+          ? `<div class="camp-jungle-row">
+              <div class="camp-column">${campGroupHtml("blue", grouped.blue, campEvents, info, events)}</div>
+              <div class="camp-column">${campGroupHtml("red", grouped.red, campEvents, info, events)}</div>
+            </div>`
+          : "";
+
+      const riverBlock = grouped.river.length
+        ? campGroupHtml("river", grouped.river, campEvents, info, events)
+        : "";
+
+      return `<div class="camp-list">${clockHint}${objectifsBlock ? `<div class="camp-neutral-block">${objectifsBlock}</div>` : ""}${jungleRow}${riverBlock ? `<div class="camp-river-block">${riverBlock}</div>` : ""}</div>`;
+    }
+
+    function decodeMaybe(v) {
+      if (typeof v !== "string") return v;
+      if (v.includes("%")) {
+        try { return JSON.parse(decodeURIComponent(v)); } catch { /* keep */ }
+      }
+      if ((v.startsWith("{") || v.startsWith("["))) {
+        try { return JSON.parse(v); } catch { /* keep */ }
+      }
+      return v;
+    }
+
+    function deepDecode(obj) {
+      if (Array.isArray(obj)) return obj.map(deepDecode);
+      if (obj && typeof obj === "object") {
+        const out = {};
+        for (const [k, v] of Object.entries(obj)) out[k] = deepDecode(decodeMaybe(v));
+        return out;
+      }
+      return decodeMaybe(obj);
+    }
+
+    function fmtTime(iso) {
+      return fmtGameTime(eventGameSec(iso, lastInfo, lastEvents));
+    }
+
+    function fmtGold(n) {
+      const v = Number(n);
+      if (!Number.isFinite(v)) return "—";
+      if (v >= 1000) return `${(v / 1000).toFixed(1)}k`;
+      return String(Math.round(v));
+    }
+
+    function economyFromInfo(info) {
+      const td = info.tickdash || {};
+      const tdPlayers = td.players?.length ? td.players : null;
+      const ecoPlayers = td.economy?.players?.length ? td.economy.players : null;
+      const tdHasItemsGold = (tdPlayers || ecoPlayers || []).some((p) => Number.isFinite(Number(p.itemsGold)));
+      let economy = tdPlayers && (tdHasItemsGold || !ecoPlayers)
+        ? { players: tdPlayers, maxGold: td.maxGold, teamGold: td.teamGold, gameTime: td.gameTime }
+        : ecoPlayers
+          ? td.economy
+          : null;
+      if (!economy?.players?.length) return null;
+
+      economy.players = normalizeEconomyPlayers(economy.players);
+      const teamGold = {};
+      for (const row of economy.players) teamGold[row.team] = (teamGold[row.team] || 0) + row.gold;
+      economy.teamGold = teamGold;
+      economy.maxGold = Math.max(...economy.players.map((p) => p.gold), 1);
+      return economy;
+    }
+
+    function normChamp(c) {
+      return (c || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function mergeEconomyPlayers(liveRows, info) {
+      const fromInfo = economyFromInfo(info);
+      if (!fromInfo?.players?.length) return liveRows || [];
+      if (!liveRows?.length) return fromInfo.players;
+
+      const byChamp = new Map();
+      for (const p of liveRows) byChamp.set(normChamp(p.champion), { ...p });
+
+      for (const p of fromInfo.players) {
+        const key = normChamp(p.champion);
+        const existing = byChamp.get(key);
+        if (!existing) {
+          byChamp.set(key, { ...p });
+          continue;
+        }
+        if (!existing.kills && !existing.deaths && !existing.assists && (p.kills || p.deaths || p.assists)) {
+          existing.kills = p.kills;
+          existing.deaths = p.deaths;
+          existing.assists = p.assists;
+        }
+        if (Number.isFinite(Number(p.itemsGold))) {
+          existing.itemsGold = Number(p.itemsGold);
+          existing.gold = Number(p.itemsGold);
+        } else if (!existing.gold && p.gold) existing.gold = p.gold;
+        if (p.items?.length) existing.items = p.items;
+        if (!existing.cs && p.cs) existing.cs = p.cs;
+        if (!existing.level && p.level) existing.level = p.level;
+      }
+
+      return [...byChamp.values()];
+    }
+
+    function normalizePlayerGold(p) {
+      const gold = Number.isFinite(Number(p.itemsGold)) ? Number(p.itemsGold) : Number(p.gold || 0);
+      return { ...p, gold: Math.max(0, Math.round(gold)) };
+    }
+
+    function normalizeEconomyPlayers(players) {
+      return (players || []).map((p) => normalizePlayerGold(p));
+    }
+
+    function buildEconomyPayload(players, base, polledAt) {
+      if (!players?.length) return null;
+      const rows = normalizeEconomyPlayers(players);
+      const teamGold = {};
+      for (const row of rows) teamGold[row.team] = (teamGold[row.team] || 0) + Number(row.gold || 0);
+      return {
+        players: rows,
+        maxGold: Math.max(...rows.map((p) => Number(p.gold || 0)), 1),
+        teamGold,
+        gameTime: base?.gameTime,
+        polledAt: polledAt || base?.polledAt,
+      };
+    }
+
+    function liveEconomy(info) {
+      const td = info.tickdash || {};
+      const tdPlayers = td.players?.length ? td.players : td.economy?.players;
+      const tdHasItemsGold = tdPlayers?.some((p) => Number.isFinite(Number(p.itemsGold)));
+
+      if (tdPlayers?.length && tdHasItemsGold) {
+        return buildEconomyPayload(tdPlayers, td, td.polledAt);
+      }
+
+      const infoEconomy = economyFromInfo(info);
+      if (lastLive?.players?.length) {
+        const merged = mergeEconomyPlayers(lastLive.players, info);
+        return buildEconomyPayload(merged, lastLive, lastLive.polledAt);
+      }
+      if (infoEconomy) {
+        return buildEconomyPayload(infoEconomy.players, infoEconomy, info.tickdash?.polledAt);
+      }
+      return null;
+    }
+
+    function resolveMyTeam(players, info) {
+      const me = players.find((p) => p.isMe);
+      if (me?.team) return me.team;
+      const si = info.summoner_info || {};
+      const myChamp = (si.champion || "").toLowerCase();
+      const myName = (si.name || "").toLowerCase();
+      const byChamp = players.find(
+        (p) =>
+          (p.champion || "").toLowerCase() === myChamp &&
+          (!myName || (p.name || "").toLowerCase().includes(myName))
+      );
+      if (byChamp?.team) return byChamp.team;
+      for (const t of decodeTeamsList(info.teams?.teams)) {
+        const name = (t.summoner || "").split("#")[0].toLowerCase();
+        if (myName && name === myName) return t.team === "Chaos" ? "CHAOS" : "ORDER";
+      }
+      const order = players.filter((p) => p.team === "ORDER").length;
+      const chaos = players.filter((p) => p.team === "CHAOS").length;
+      if (order && !chaos) return "ORDER";
+      if (chaos && !order) return "CHAOS";
+      if (order <= chaos) return "ORDER";
+      return "CHAOS";
+    }
+
+    function countPlayerCompleted(player) {
+      if (!itemsCompletedDico || !player?.items?.length) return null;
+      let n = 0;
+      for (const it of player.items) {
+        const id = String(it?.itemID ?? it);
+        if (itemsCompletedDico[id]) n += 1;
+      }
+      return n;
+    }
+
+    function moneyRow(player, maxGold, sideClass) {
+      const pct = Math.max(3, (player.gold / maxGold) * 100);
+      const bot = player.isBot ? " · bot" : "";
+      const completed = countPlayerCompleted(player);
+      const completedHtml =
+        completed != null
+          ? `<span class="money-completed" title="Items completed (≥3k, DDragon ${itemsCompletedPatch || "?"})">${completed}</span>`
+          : `<span></span>`;
+      return `<div class="money-row${player.isMe ? " me" : ""}">
+        <div class="money-meta">
+          <span class="money-champ">${player.champion}</span>
+          <span class="money-name">${player.name}${bot}</span>
+        </div>
+        <div class="money-bar-wrap">
+          <div class="money-bar-track">
+            <div class="money-bar-fill ${sideClass}" style="width:${pct.toFixed(1)}%"></div>
+          </div>
+        </div>
+        <span class="money-val">${fmtGold(player.gold)}</span>
+        ${completedHtml}
+      </div>`;
+    }
+
+    function kdaAvg(k, d, a) {
+      if (d === 0) return k + a;
+      return (k + a) / d;
+    }
+
+    function isSupport(p) {
+      return (p.position || "").toUpperCase() === "UTILITY";
+    }
+
+    function teamKillTotal(players, team) {
+      return players
+        .filter((p) => p.team === team)
+        .reduce((s, p) => s + Number(p.kills || 0), 0);
+    }
+
+    function scorePlayerPool(pool, teamKills) {
+      if (!pool.length) return null;
+
+      const kills = Number.isFinite(teamKills) ? teamKills : pool.reduce((s, p) => s + Number(p.kills || 0), 0);
+
+      const scored = pool.map((p) => {
+        const k = Number(p.kills || 0);
+        const d = Number(p.deaths || 0);
+        const a = Number(p.assists || 0);
+        const kda = kdaAvg(k, d, a);
+        const kp = kills > 0 ? Math.min(100, ((k + a) / kills) * 100) : 0;
+        return { ...p, k, d, a, kda, kp };
+      });
+
+      const maxGold = Math.max(...scored.map((s) => Number(s.gold || 0)), 0.001);
+      const maxKda = Math.max(...scored.map((s) => s.kda), 0.001);
+      const maxKp = Math.max(...scored.map((s) => s.kp), 0.001);
+      const maxCs = Math.max(...scored.map((s) => Number(s.cs || 0)), 0.001);
+      const maxLevel = Math.max(...scored.map((s) => Number(s.level || 1)), 1);
+
+      for (const s of scored) {
+        const goldNorm = Number(s.gold || 0) / maxGold;
+        const kdaNorm = s.kda / maxKda;
+        const kpNorm = s.kp / maxKp;
+        const csNorm = Number(s.cs || 0) / maxCs;
+        const levelNorm = Number(s.level || 1) / maxLevel;
+        s.mix = (goldNorm * 0.1 + kdaNorm * 0.35 + kpNorm * 0.15 + csNorm * 0.2 + levelNorm * 0.2) * 100;
+      }
+
+      scored.sort((a, b) => b.mix - a.mix);
+      return { top: scored[0], rest: scored.slice(1), scored };
+    }
+
+    /** Mix comparable inter-équipes (normalisation sur les 10 joueurs). */
+    function scoreLobbyMix(players) {
+      if (!players?.length) return null;
+      const scored = players.map((p) => {
+        const k = Number(p.kills || 0);
+        const d = Number(p.deaths || 0);
+        const a = Number(p.assists || 0);
+        const tk = teamKillTotal(players, p.team);
+        const kda = kdaAvg(k, d, a);
+        const kp = tk > 0 ? Math.min(100, ((k + a) / tk) * 100) : 0;
+        return { ...p, k, d, a, kda, kp };
+      });
+      const maxGold = Math.max(...scored.map((s) => Number(s.gold || 0)), 0.001);
+      const maxKda = Math.max(...scored.map((s) => s.kda), 0.001);
+      const maxKp = Math.max(...scored.map((s) => s.kp), 0.001);
+      const maxCs = Math.max(...scored.map((s) => Number(s.cs || 0)), 0.001);
+      const maxLevel = Math.max(...scored.map((s) => Number(s.level || 1)), 1);
+      for (const s of scored) {
+        const goldNorm = Number(s.gold || 0) / maxGold;
+        const kdaNorm = s.kda / maxKda;
+        const kpNorm = s.kp / maxKp;
+        const csNorm = Number(s.cs || 0) / maxCs;
+        const levelNorm = Number(s.level || 1) / maxLevel;
+        s.mix = (goldNorm * 0.1 + kdaNorm * 0.35 + kpNorm * 0.15 + csNorm * 0.2 + levelNorm * 0.2) * 100;
+      }
+      const totals = { ORDER: 0, CHAOS: 0 };
+      for (const s of scored) {
+        if (s.team === "ORDER" || s.team === "CHAOS") totals[s.team] += Math.round(s.mix);
+      }
+      scored.sort((a, b) => b.mix - a.mix);
+      return { scored, totals };
+    }
+
+    function teamPowerDelta(totals, myTeam) {
+      if (!totals || !myTeam) return null;
+      const enemyTeam = myTeam === "ORDER" ? "CHAOS" : "ORDER";
+      const mine = Number(totals[myTeam] || 0);
+      const theirs = Number(totals[enemyTeam] || 0);
+      const delta = mine - theirs;
+      if (delta === 0) return { kind: "even", sign: "", amount: 0, mine, theirs };
+      if (delta > 0) return { kind: "benefit", sign: "+", amount: delta, mine, theirs };
+      return { kind: "deficit", sign: "−", amount: -delta, mine, theirs };
+    }
+
+    function fmtPowerDelta(pd) {
+      if (!pd) return "—";
+      if (pd.kind === "even") return "Even";
+      return `${pd.sign}${pd.amount}`;
+    }
+
+    function powerDeltaClass(pd) {
+      if (!pd) return "";
+      if (pd.kind === "benefit") return "power-up";
+      if (pd.kind === "deficit") return "power-down";
+      return "even";
+    }
+
+    function teamPowerVsHtml(totals, myTeam) {
+      if (!totals || !myTeam) return "—";
+      const enemy = myTeam === "ORDER" ? "CHAOS" : "ORDER";
+      const mine = totals[myTeam] ?? "—";
+      const theirs = totals[enemy] ?? "—";
+      return `<span class="team-power-us">${mine}</span> / <span class="team-power-them">${theirs}</span>`;
+    }
+
+    function teamMixMap(players, team) {
+      const pool = players.filter((p) => p.team === team);
+      const data = scorePlayerPool(pool, teamKillTotal(players, team));
+      const map = new Map();
+      if (data?.scored) {
+        for (const p of data.scored) map.set(normChamp(p.champion), Math.round(p.mix));
+      }
+      return map;
+    }
+
+    function myPowerIndex(economy, info) {
+      if (!economy?.players?.length) return null;
+      const myTeam = resolveMyTeam(economy.players, info);
+      if (!myTeam) return null;
+      const pool = economy.players.filter((p) => p.team === myTeam && !isSupport(p));
+      const data = scorePlayerPool(pool, teamKillTotal(economy.players, myTeam));
+      if (!data?.scored?.length) return null;
+      const me = pool.find((p) => isLocalPlayer(p, info));
+      if (!me) return null;
+      const row = data.scored.find((s) => normChamp(s.champion) === normChamp(me.champion));
+      return row ? Math.round(row.mix) : null;
+    }
+
+    function strongestOpponent(economy, info) {
+      if (!economy?.players?.length) return null;
+      const myTeam = resolveMyTeam(economy.players, info);
+      if (!myTeam) return null;
+      const enemyTeam = myTeam === "ORDER" ? "CHAOS" : "ORDER";
+      return scorePlayerPool(
+        economy.players.filter((p) => p.team === enemyTeam),
+        teamKillTotal(economy.players, enemyTeam)
+      );
+    }
+
+    function strongestAlly(economy, info) {
+      if (!economy?.players?.length) return null;
+      const myTeam = resolveMyTeam(economy.players, info);
+      if (!myTeam) return null;
+      const allies = economy.players.filter(
+        (p) =>
+          p.team === myTeam &&
+          !p.isMe &&
+          !isLocalPlayer(p, info) &&
+          !isSupport(p)
+      );
+      return scorePlayerPool(allies, teamKillTotal(economy.players, myTeam));
+    }
+
+    function strongestCardHtml(data, emptyMsg) {
+      if (!data) {
+        return `<div class="strongest-wait">${emptyMsg}</div>`;
+      }
+      const p = data.top;
+      const role = ROLE_SHORT[p.position] || "—";
+      const kdaRatio = p.kda >= 10 ? p.kda.toFixed(1) : p.kda.toFixed(2);
+      const others = data.rest
+        .slice(0, 3)
+        .map((o, i) => `<span class="strongest-other">${i + 2}. ${o.champion} <small>${Math.round(o.mix)}</small></span>`)
+        .join("");
+      return `<div class="strongest-hero">
+        <div class="strongest-main">
+          <span class="strongest-champ">${p.champion}</span>
+          <span class="strongest-role">${role}</span>
+          ${p.isDead ? '<span class="strongest-dead">MORT</span>' : ""}
+        </div>
+        <div class="strongest-stats">
+          <div class="strongest-stat">
+            <span class="lbl">KDA</span>
+            <span class="val kda"><span class="k">${p.k}</span>/<span class="d">${p.d}</span>/<span class="a">${p.a}</span></span>
+            <span class="sub">${kdaRatio} avg · ${Math.round(p.kp)}% KP</span>
+          </div>
+          <div class="strongest-stat">
+            <span class="lbl">Or</span>
+            <span class="val">${fmtGold(p.gold)}</span>
+            <span class="sub">${p.cs} CS</span>
+          </div>
+          <div class="strongest-stat highlight">
+            <span class="lbl">Mix</span>
+            <span class="val">${Math.round(p.mix)}</span>
+          </div>
+        </div>
+        ${others ? `<div class="strongest-rank">${others}</div>` : ""}
+      </div>`;
+    }
+
+    function strongestOpponentHtml(info) {
+      const economy = liveEconomy(info);
+      return strongestCardHtml(
+        strongestOpponent(economy, info),
+        "Live Client (:2999) requis"
+      );
+    }
+
+    function strongestAllyHtml(info) {
+      const economy = liveEconomy(info);
+      return strongestCardHtml(
+        strongestAlly(economy, info),
+        "Aucun allié (solo)"
+      );
+    }
+
+    /** Priorités P1 → P2 par lane (positions LC) */
+    const TARGET_PRIORITIES_BY_ROLE = {
+      TOP: ["BOTTOM", "MIDDLE"],
+      JUNGLE: ["MIDDLE", "BOTTOM"],
+      MIDDLE: ["BOTTOM", "MIDDLE"],
+      BOTTOM: ["MIDDLE", "UTILITY"],
+      UTILITY: ["BOTTOM", "MIDDLE"],
+      NONE: ["BOTTOM", "MIDDLE"],
+    };
+
+    /** Override par archétype affiché (assassin > lane) */
+    const TARGET_PRIORITIES_BY_ARCHETYPE = {
+      Assassin: ["BOTTOM", "MIDDLE"],
+      Mid: ["BOTTOM", "MIDDLE"],
+      ADC: ["MIDDLE", "UTILITY"],
+      Top: ["BOTTOM", "MIDDLE"],
+      Jg: ["MIDDLE", "BOTTOM"],
+      Support: ["BOTTOM", "MIDDLE"],
+      Flex: ["BOTTOM", "MIDDLE"],
+    };
+
+    const ASSASSIN_CHAMPS = new Set([
+      "ahri", "zed", "leblanc", "fizz", "katarina", "akali", "talon", "qiyana",
+      "khazix", "ekko", "syndra", "vex", "lissandra", "naafiri", "diana", "kassadin",
+      "yasuo", "yone", "irelia", "sylas", "kayn", "graves", "nidalee", "jayce",
+    ]);
+
+    const TARGET_ROLE_LABEL = { BOTTOM: "ADC", MIDDLE: "Mid", TOP: "Top", JUNGLE: "Jg", UTILITY: "Sup" };
+
+    function myProfile(info) {
+      const economy = liveEconomy(info);
+      const players = economy?.players || [];
+      let me = players.find((p) => p.isMe);
+      if (!me) me = players.find((p) => isLocalPlayer(p, info));
+      const si = info.summoner_info || {};
+      const champion = me?.champion || si.champion || "—";
+      const position = (me?.position || "NONE").toUpperCase();
+      const isAssassin = ASSASSIN_CHAMPS.has(normChamp(champion));
+      let archetype = "Flex";
+      if (isAssassin) archetype = "Assassin";
+      else if (position === "MIDDLE") archetype = "Mid";
+      else if (position === "BOTTOM") archetype = "ADC";
+      else if (position === "TOP") archetype = "Top";
+      else if (position === "JUNGLE") archetype = "Jg";
+      else if (position === "UTILITY") archetype = "Support";
+      const roleLabel = ROLE_SHORT[position] || (isAssassin ? "Mid" : "—");
+      return { champion, position, roleLabel, archetype, isAssassin };
+    }
+
+    function targetPriorityRoles(profile) {
+      if (profile.isAssassin && TARGET_PRIORITIES_BY_ARCHETYPE.Assassin) {
+        return TARGET_PRIORITIES_BY_ARCHETYPE.Assassin;
+      }
+      if (TARGET_PRIORITIES_BY_ARCHETYPE[profile.archetype]) {
+        return TARGET_PRIORITIES_BY_ARCHETYPE[profile.archetype];
+      }
+      return TARGET_PRIORITIES_BY_ROLE[profile.position] || TARGET_PRIORITIES_BY_ROLE.NONE;
+    }
+
+    function resolveMainTargets(info) {
+      const economy = liveEconomy(info);
+      if (!economy?.players?.length) return null;
+      const myTeam = resolveMyTeam(economy.players, info);
+      if (!myTeam) return null;
+      const profile = myProfile(info);
+      const enemyTeam = myTeam === "ORDER" ? "CHAOS" : "ORDER";
+      const enemies = economy.players.filter((p) => p.team === enemyTeam);
+      const priorities = targetPriorityRoles(profile);
+      const used = new Set();
+      const slots = [];
+
+      for (const role of priorities) {
+        let player =
+          enemies.find(
+            (p) => (p.position || "").toUpperCase() === role && !used.has(p.champion)
+          ) || null;
+        if (!player) {
+          const fallback = enemies
+            .filter((p) => !used.has(p.champion) && (p.position || "").toUpperCase() !== "UTILITY")
+            .sort((a, b) => Number(b.gold || 0) - Number(a.gold || 0))[0];
+          player = fallback || null;
+        }
+        if (player) used.add(player.champion);
+        slots.push({ role, roleLabel: TARGET_ROLE_LABEL[role] || ROLE_SHORT[role], player });
+      }
+      return { profile, slots };
+    }
+
+    function targetRowHtml(slot, index) {
+      const p = slot.player;
+      if (!p) {
+        return `<div class="target-row">
+          <span class="target-priority">P${index + 1}</span>
+          <div class="target-main">
+            <div class="lane">${slot.roleLabel}</div>
+            <div class="champ">—</div>
+          </div>
+          <span class="target-meta">—</span>
+        </div>`;
+      }
+      const dead = p.isDead ? '<span class="target-meta dead">MORT</span>' : `<span class="target-meta">${fmtGold(p.gold)}</span>`;
+      return `<div class="target-row${index === 0 ? " primary" : ""}">
+        <span class="target-priority">P${index + 1}</span>
+        <div class="target-main">
+          <div class="lane">${slot.roleLabel}</div>
+          <div class="champ">${p.champion}</div>
+          <div class="sub">${p.name || "—"} · ${p.cs} CS</div>
+        </div>
+        ${dead}
+      </div>`;
+    }
+
+    function mainTargetsHtml(info) {
+      const data = resolveMainTargets(info);
+      if (!data) return `<div class="target-wait">Live Client (:2999) requis</div>`;
+      const { profile, slots } = data;
+      const targetLine = slots.map((s) => s.roleLabel).join(" → ");
+      return `<div class="target-role-row">
+          <span class="target-pill role">${profile.archetype} · ${profile.roleLabel}</span>
+          <span class="target-pill">${profile.champion}</span>
+        </div>
+        <div class="target-note">Main targets · ${targetLine}</div>
+        <div class="target-list">${slots.map((s, i) => targetRowHtml(s, i)).join("")}</div>`;
+    }
+
+    function goldDelta(economy, info) {
+      if (!economy?.players?.length || !economy.teamGold) return null;
+      const myTeam = resolveMyTeam(economy.players, info);
+      if (!myTeam) return null;
+      const enemyTeam = myTeam === "ORDER" ? "CHAOS" : "ORDER";
+      const mine = Number(economy.teamGold[myTeam] || 0);
+      const theirs = Number(economy.teamGold[enemyTeam] || 0);
+      const delta = mine - theirs;
+      if (delta === 0) {
+        return { kind: "even", label: "Gold Even", sign: "", amount: 0, mine, theirs };
+      }
+      if (delta > 0) {
+        return { kind: "benefit", label: "Gold Benefit", sign: "+", amount: delta, mine, theirs };
+      }
+      return { kind: "deficit", label: "Gold Deficit", sign: "−", amount: -delta, mine, theirs };
+    }
+
+    function fmtGoldDeltaNav(gd) {
+      if (!gd) return "—";
+      if (gd.kind === "even") return "Even";
+      return `${gd.sign}${fmtGold(gd.amount)}`;
+    }
+
+    function goldDeltaHeroHtml(gd) {
+      if (!gd) return "";
+      const value =
+        gd.kind === "even"
+          ? "0"
+          : `${gd.sign}${fmtGold(gd.amount)}`;
+      const sub = `Team ${fmtGold(gd.mine)} vs ${fmtGold(gd.theirs)}`;
+      return `<div class="gold-delta-hero ${gd.kind}">
+        <span class="gold-delta-label">${gd.label}</span>
+        <span class="gold-delta-value">${value}</span>
+        <span class="gold-delta-sub">${sub}</span>
+      </div>`;
+    }
+
+    function moneyTeamHtml(teamKey, label, sideClass, players, maxGold) {
+      const sorted = players.filter((p) => p.team === teamKey).sort((a, b) => b.gold - a.gold);
+      if (!sorted.length) return "";
+      const total = sorted.reduce((sum, p) => sum + p.gold, 0);
+      return `<div class="money-team">
+        <div class="money-team-head">
+          <span class="money-team-label ${sideClass}">${label}</span>
+          <span class="money-team-total">${fmtGold(total)}</span>
+        </div>
+        ${sorted.map((p) => moneyRow(p, maxGold, sideClass)).join("")}
+      </div>`;
+    }
+
+    function moneyHtml(info) {
+      const economy = liveEconomy(info);
+      if (!economy) {
+        const lcErr = lastLive?.error;
+        return `<div class='waiting'>Or — en attente Live Client (:2999)${lcErr ? `<br/><small>${lcErr}</small>` : ""}</div>`;
+      }
+      const { players, maxGold } = economy;
+      const mins = economy.gameTime ? Math.floor(economy.gameTime / 60) : null;
+      const patchNote = itemsCompletedPatch ? ` · ≥3k p${itemsCompletedPatch.replace(/\.\d+$/, "")}` : "";
+      return `<div class="money-panel">
+        <div class="money-header">
+          ${mins != null ? `<span class="money-time">${mins}:${String(Math.floor(economy.gameTime % 60)).padStart(2, "0")}</span>` : "<span></span>"}
+          <span class="money-note-inline">Or items · compl.${patchNote}</span>
+        </div>
+        ${moneyTeamHtml("ORDER", "Blue", "blue", players, maxGold)}
+        ${moneyTeamHtml("CHAOS", "Red", "red", players, maxGold)}
+      </div>`;
+    }
+
+    function championName(info) {
+      return info.summoner_info?.champion || "—";
+    }
+
+    function isLocalPlayer(player, info) {
+      if (player?.isMe) return true;
+      const si = info.summoner_info || {};
+      const myChamp = (si.champion || "").toLowerCase();
+      const myName = (si.name || "").toLowerCase();
+      const champ = (player?.champion || "").toLowerCase();
+      const name = (player?.name || "").toLowerCase();
+      if (myChamp && champ === myChamp) {
+        if (!name || name === "?" || name === myName) return true;
+      }
+      return false;
+    }
+
+    function eventData(e) {
+      const d = e.data;
+      if (d && typeof d === "object" && d.name && d.data !== undefined) return d;
+      if (d && typeof d === "object") return d;
+      return { raw: d };
+    }
+
+    function decodeTeamsList(raw) {
+      if (!raw) return [];
+      let decoded = raw;
+      if (typeof raw === "string") {
+        try { decoded = decodeURIComponent(raw); } catch { decoded = raw; }
+        try { decoded = JSON.parse(decoded); } catch { return []; }
+      }
+      return Array.isArray(decoded) ? decoded : [];
+    }
+
+    function gameRoster(info) {
+      const td = info.tickdash || {};
+      const si = info.summoner_info || {};
+      const myChamp = (si.champion || "").toLowerCase();
+      const myName = (si.name || "").toLowerCase();
+      if (Array.isArray(td.players) && td.players.length) {
+        return td.players.map((p) => ({
+          ...p,
+          isMe:
+            !!p.isMe ||
+            (myChamp &&
+              (p.champion || "").toLowerCase() === myChamp &&
+              (!p.name || p.name.toLowerCase() === myName)),
+        }));
+      }
+      return decodeTeamsList(info.teams?.teams).map((t) => {
+        const name = (t.summoner || "?").split("#")[0];
+        const champion = t.champion || "?";
+        return {
+          champion,
+          name,
+          team: t.team === "Chaos" ? "CHAOS" : "ORDER",
+          isMe:
+            !!myChamp &&
+            champion.toLowerCase() === myChamp &&
+            name.toLowerCase() === myName,
+        };
+      });
+    }
+
+    function rosterByTeam(roster) {
+      const order = roster.filter((p) => p.team === "ORDER");
+      const chaos = roster.filter((p) => p.team === "CHAOS");
+      return order.length || chaos.length ? [...order, ...chaos] : roster;
+    }
+
+    function champForFrame(frameIdx, roster) {
+      const ordered = rosterByTeam(roster);
+      return ordered[frameIdx] || roster[frameIdx] || { champion: "?", name: "?", team: null };
+    }
+
+    function parseFrameCds(info) {
+      const tf = info.team_frames || {};
+      const out = {};
+      for (const [key, val] of Object.entries(tf)) {
+        const m = key.match(/^team_frames_(\d+)$/);
+        if (!m) continue;
+        let parsed = val;
+        if (typeof val === "string") {
+          try { parsed = JSON.parse(val); } catch { continue; }
+        }
+        const cd = Number(parsed?.ult_cd);
+        if (Number.isFinite(cd)) out[Number(m[1])] = cd;
+      }
+      return out;
+    }
+
+    function detectLiveFrameUlts(info) {
+      const cds = parseFrameCds(info);
+      const roster = gameRoster(info);
+      if (!Object.keys(cds).length || !roster.length) return [];
+      const at = new Date().toISOString();
+      const now = Date.now();
+      const events = [];
+      for (const [idxStr, cd] of Object.entries(cds)) {
+        const idx = Number(idxStr);
+        const prev = ultFramePrev[idx];
+        const jumped = prev !== undefined && ((prev <= 3 && cd >= 12) || (cd - prev >= 18 && cd >= 18));
+        if (jumped && now - (ultFrameLastFired[idx] || 0) >= 4000) {
+          const p = champForFrame(idx, roster);
+          if (!isLocalPlayer(p, info)) {
+            events.push({
+              type: "event",
+              at,
+              feature: "tickdash",
+              name: "ult_used",
+              data: { champion: p.champion, player: p.name, team: p.team, frame: idx, source: "team_frames" },
+            });
+            ultFrameLastFired[idx] = now;
+          }
+        }
+        ultFramePrev[idx] = cd;
+      }
+      return events;
+    }
+
+    function mergeUltEvents(logEvents, liveEvents) {
+      const out = [...logEvents];
+      for (const le of liveEvents) {
+        const champ = le.data?.champion;
+        const t = Date.parse(le.at);
+        const dupe = out.some((e) => {
+          if (e.name !== "ult_used") return false;
+          const d = eventData(e);
+          return d.champion === champ && Math.abs(Date.parse(e.at) - t) < 5000;
+        });
+        if (!dupe) out.push(le);
+      }
+      return out.sort((a, b) => Date.parse(b.at) - Date.parse(a.at));
+    }
+
+    function ultActor(data, info) {
+      const champ = data.champion || championName(info);
+      const name = data.player;
+      if (name && name !== "?") return `${name} · ${champ}`;
+      return champ;
+    }
+
+    function playerLabel(info) {
+      const si = info.summoner_info || {};
+      return `${si.name || "Toi"} · ${si.champion || "—"}`;
+    }
+
+    function sideText(side) {
+      if (side === "team") return "ennemi";
+      if (side === "ally" || side === "order") return "allié";
+      if (side === "enemy" || side === "chaos") return "ennemi";
+      return side || null;
+    }
+
+    function killLabel(label) {
+      const map = {
+        kill: "Kill",
+        double_kill: "Double kill",
+        triple_kill: "Triple kill",
+        quadra_kill: "Quadra kill",
+        penta_kill: "Penta kill",
+      };
+      return map[label] || label?.replace(/_/g, " ") || "Kill";
+    }
+
+    function parseAnnouncerVo(name) {
+      let s = name.replace(/^play_vo_announcer_\w+_/, "");
+      const you = /you(yourteam)?$/i.test(s) || s.includes("youyourteam");
+      s = s
+        .replace(/youyourteam$/i, "")
+        .replace(/yourteam$/i, "")
+        .replace(/enemyteam$/i, " (ennemis)")
+        .replace(/you$/i, "");
+
+      const dupeWithKill = [
+        /doublekill/i, /triplekill/i, /quadrakill/i, /pentakill/i,
+        /firstblood/i, /killchampionturrethero/i,
+      ];
+      if (dupeWithKill.some((re) => re.test(s))) return null;
+
+      const patterns = [
+        [/shutdownhero/i, "Shutdown"],
+        [/rampage/i, "Rampage"],
+        [/unstoppable/i, "Unstoppable"],
+        [/dominating/i, "Dominating"],
+        [/legendary/i, "Legendary"],
+        [/godlike/i, "Godlike"],
+        [/turretdestroy/i, "Tour détruite"],
+        [/ace/i, "Ace"],
+        [/executed/i, "Exécuté"],
+      ];
+      for (const [re, label] of patterns) {
+        if (re.test(s)) return you ? `${label} (toi)` : label;
+      }
+      return null;
+    }
+
+    function inferAceFavorable(allEvents, aceAt) {
+      const aceMs = Date.parse(aceAt);
+      if (!Number.isFinite(aceMs)) return null;
+      let kills = 0;
+      let deaths = 0;
+      for (const ev of allEvents) {
+        if (ev.type !== "event") continue;
+        const evMs = Date.parse(ev.at);
+        if (!Number.isFinite(evMs) || evMs > aceMs || aceMs - evMs > 25000) continue;
+        if (ev.feature === "announcer" && ev.name === "slain") {
+          const kind = slainKind(eventData(ev).data ?? eventData(ev).team);
+          if (kind === "ally_kill") kills += 1;
+          else if (kind === "ally_death") deaths += 1;
+        }
+        if (ev.feature === "announcer" && ev.name === "self_slain") {
+          const raw = String(eventData(ev).data ?? eventData(ev).team ?? "").toLowerCase();
+          if (raw === "team") kills += 1;
+          else deaths += 1;
+        }
+      }
+      if (kills === 0 && deaths === 0) return null;
+      return kills >= deaths;
+    }
+
+    function slainKind(raw) {
+      const s = String(raw ?? "").toLowerCase();
+      if (s === "team") return "ally_kill";
+      if (s === "enemy") return "ally_death";
+      return null;
+    }
+
+    function playerTimelineKey(p) {
+      return `${p.team}:${normChamp(p.champion)}`;
+    }
+
+    function extractPlayerTimeline(allEvents) {
+      const snaps = [];
+      for (const e of allEvents) {
+        if (e.type !== "info" || e.feature !== "tickdash") continue;
+        const td = e.info || {};
+        const eco = td.economy || td;
+        const players = eco.players || td.players;
+        if (!players?.length) continue;
+        const gameTime = Number(eco.gameTime ?? td.gameTime);
+        const at = Date.parse(e.at || td.polledAt);
+        snaps.push({
+          at: Number.isFinite(at) ? at : null,
+          gameTime: Number.isFinite(gameTime) ? gameTime : null,
+          players: players.map((p) => ({
+            champion: p.champion,
+            name: p.name,
+            team: p.team,
+            isBot: !!p.isBot,
+            isMe: !!p.isMe,
+            kills: Number(p.kills || 0),
+            deaths: Number(p.deaths || 0),
+            assists: Number(p.assists || 0),
+          })),
+        });
+      }
+      snaps.sort((a, b) => {
+        const ta = a.gameTime ?? a.at ?? 0;
+        const tb = b.gameTime ?? b.at ?? 0;
+        return ta - tb;
+      });
+      return snaps;
+    }
+
+    function playerActorLabel(p, info) {
+      if (!p) return null;
+      if (isLocalPlayer(p, info)) return playerLabel(info);
+      const name = (p.name || "?").split("#")[0];
+      const bot = p.isBot ? " · bot" : "";
+      return `${name}${bot} · ${p.champion || "?"}`;
+    }
+
+    function findPlayerSnapshotAfter(timeline, gameSec, delaySec = 2.5) {
+      const target = gameSec + delaySec;
+      let best = null;
+      for (const s of timeline) {
+        if (s.gameTime == null) continue;
+        if (s.gameTime >= gameSec + 0.4) best = s;
+        if (s.gameTime >= target) break;
+      }
+      return best || timeline[timeline.length - 1] || null;
+    }
+
+    function findStatDeltaPlayer(isoAt, timeline, info, allEvents, { team, stat, minDelta = 1 }) {
+      if (!timeline?.length) return null;
+      const gameSec = eventGameSec(isoAt, info, allEvents);
+      if (gameSec == null) return null;
+      const before = findSnapshotAtOrBefore(timeline, gameSec - 1.5);
+      const after = findPlayerSnapshotAfter(timeline, gameSec, 2.5);
+      if (!before?.players?.length || !after?.players?.length) return null;
+
+      const prevMap = new Map();
+      for (const p of before.players) {
+        if (team && p.team !== team) continue;
+        prevMap.set(playerTimelineKey(p), p);
+      }
+
+      let best = null;
+      let bestDelta = 0;
+      for (const p of after.players) {
+        if (team && p.team !== team) continue;
+        const prev = prevMap.get(playerTimelineKey(p));
+        if (!prev) continue;
+        const delta = Number(p[stat] || 0) - Number(prev[stat] || 0);
+        if (delta >= minDelta && delta > bestDelta) {
+          bestDelta = delta;
+          best = p;
+        }
+      }
+      return best;
+    }
+
+    function findFirstBloodKiller(isoAt, timeline, info, allEvents) {
+      if (!timeline?.length) return null;
+      const gameSec = eventGameSec(isoAt, info, allEvents);
+      if (gameSec == null) return null;
+      const before = findSnapshotAtOrBefore(timeline, gameSec - 2);
+      const after = findPlayerSnapshotAfter(timeline, gameSec, 3);
+      if (!before?.players?.length || !after?.players?.length) return null;
+
+      const prevMap = new Map();
+      for (const p of before.players) prevMap.set(playerTimelineKey(p), p);
+
+      for (const p of after.players) {
+        const prev = prevMap.get(playerTimelineKey(p));
+        if (!prev) continue;
+        if (prev.kills === 0 && p.kills >= 1) return p;
+      }
+      return findStatDeltaPlayer(isoAt, timeline, info, allEvents, { stat: "kills", minDelta: 1 });
+    }
+
+    function hasNearbyAnnouncer(allEvents, isoAt, name, windowMs = 6000) {
+      const t = Date.parse(isoAt);
+      if (!Number.isFinite(t)) return false;
+      for (const ev of allEvents) {
+        if (ev.type !== "event" || ev.feature !== "announcer" || ev.name !== name) continue;
+        const et = Date.parse(ev.at);
+        if (!Number.isFinite(et)) continue;
+        if (Math.abs(et - t) <= windowMs) return true;
+      }
+      return false;
+    }
+
+    function formatEvent(e, info, allEvents, playerTimeline) {
+      if (e.feature === "deathAndRespawn" || e.feature === "abilities") return { skip: true };
+
+      if (e.feature === "tickdash" && e.name === "ult_used") {
+        const data = eventData(e);
+        if (isLocalPlayer({ champion: data.champion, name: data.player }, info)) {
+          return { skip: true };
+        }
+        return {
+          skip: false,
+          tag: "ulti",
+          tagLabel: "ULT",
+          desc: "Ulti utilisé (autre)",
+          actor: ultActor(data, info),
+        };
+      }
+
+      const data = eventData(e);
+      const player = playerLabel(info);
+      const side = sideText(data.data ?? data.side ?? data.team);
+
+      if (e.feature === "kill" && e.name === "kill") {
+        const label = data.label || "kill";
+        const count = data.count ?? data.totalKills ?? "—";
+        const total = Number(data.totalKills ?? count);
+        const isFb = label === "kill" && total === 1;
+        if (isFb && hasNearbyAnnouncer(allEvents, e.at, "first_blood")) {
+          return { skip: true };
+        }
+        return {
+          skip: false,
+          tag: "kill",
+          tagLabel: isFb ? "FB" : killLabel(label),
+          desc: isFb ? "First blood · toi" : label === "kill" ? `Kill #${count}` : killLabel(label),
+          actor: player,
+        };
+      }
+
+      if (e.feature === "death" || e.name === "death") {
+        return {
+          skip: false,
+          tag: "death",
+          tagLabel: "Mort",
+          desc: `Mort #${data.count ?? "—"}`,
+          actor: player,
+        };
+      }
+
+      if (e.feature === "assist" || e.name === "assist") {
+        return {
+          skip: false,
+          tag: "assist",
+          tagLabel: "Assist",
+          desc: `Assist #${data.count ?? "—"}`,
+          actor: player,
+        };
+      }
+
+      if (e.feature === "respawn" || e.name === "respawn") {
+        return { skip: false, tag: "info", tagLabel: "Respawn", desc: "Retour en jeu", actor: player };
+      }
+
+      if (e.feature === "announcer") {
+        const key = e.name;
+        if (EVENT_SKIP.has(key)) return { skip: true };
+
+        if (key === "self_slain") {
+          const raw = String(data.data ?? data.team ?? "").toLowerCase();
+          const isKill = raw === "team";
+          if (isKill) {
+            return {
+              skip: false,
+              tag: "kill",
+              tagLabel: "Kill",
+              desc: "Tu as tué un ennemi",
+              actor: player,
+            };
+          }
+          return {
+            skip: false,
+            tag: "death",
+            tagLabel: "Mort",
+            desc: "Tu es mort",
+            actor: player,
+          };
+        }
+
+        if (key === "slain") {
+          const kind = slainKind(data.data ?? data.team);
+          const economy = liveEconomy(info);
+          const myTeam = economy?.players?.length ? resolveMyTeam(economy.players, info) : null;
+
+          if (kind === "ally_kill") {
+            const killer = myTeam
+              ? findStatDeltaPlayer(e.at, playerTimeline, info, allEvents, { team: myTeam, stat: "kills" })
+              : null;
+            const mine = killer && isLocalPlayer(killer, info);
+            return {
+              skip: false,
+              tag: "kill",
+              tagLabel: "Kill",
+              desc: mine ? "Tu as tué un ennemi" : "Ennemi tué",
+              actor: killer ? playerActorLabel(killer, info) : "Allié (équipe)",
+              actorMuted: killer && !mine,
+            };
+          }
+
+          if (kind === "ally_death") {
+            const victim = myTeam
+              ? findStatDeltaPlayer(e.at, playerTimeline, info, allEvents, { team: myTeam, stat: "deaths" })
+              : null;
+            const mine = victim && isLocalPlayer(victim, info);
+            return {
+              skip: false,
+              tag: "death",
+              tagLabel: "Mort",
+              desc: mine ? "Tu es mort" : "Allié tué",
+              actor: victim ? playerActorLabel(victim, info) : "Allié (équipe)",
+              actorMuted: victim && !mine,
+            };
+          }
+
+          return {
+            skip: false,
+            tag: "info",
+            tagLabel: "Slain",
+            desc: "Combat",
+            actor: null,
+          };
+        }
+
+        if (key === "turret_destroy") {
+          const raw = String(data.data ?? data.team ?? "").toLowerCase();
+          const allyLost = raw === "team";
+          return {
+            skip: false,
+            tag: "obj",
+            tagLabel: "Tour",
+            desc: allyLost ? "Tour alliée détruite" : "Tour ennemie détruite",
+            actor: allyLost ? "Ton équipe" : "Ton équipe",
+          };
+        }
+
+        if (key === "first_blood") {
+          const killer = findFirstBloodKiller(e.at, playerTimeline, info, allEvents);
+          const mine = killer && isLocalPlayer(killer, info);
+          return {
+            skip: false,
+            tag: "kill",
+            tagLabel: "FB",
+            desc: mine ? "First blood · toi" : "First blood",
+            actor: killer ? playerActorLabel(killer, info) : null,
+            actorMuted: killer && !mine,
+          };
+        }
+
+        if (key === "ace") {
+          const favorable = inferAceFavorable(allEvents || [], e.at);
+          return {
+            skip: false,
+            tag: "obj",
+            tagLabel: "Ace",
+            desc: favorable === false ? "Ace subi" : "Ace ennemi",
+            actor: favorable === false ? "Ennemis" : "Ton équipe",
+            aceFavorable: favorable !== false,
+          };
+        }
+
+        if (key.startsWith("play_vo_announcer")) {
+          const parsed = parseAnnouncerVo(key);
+          if (!parsed) return { skip: true };
+          return {
+            skip: false,
+            tag: "obj",
+            tagLabel: "VO",
+            desc: parsed,
+            actor: parsed.includes("(toi)") ? player : null,
+          };
+        }
+
+        return {
+          skip: false,
+          tag: "info",
+          tagLabel: "Annonce",
+          desc: key.replace(/_/g, " "),
+          actor: side ? (side === "ennemi" ? "Ennemis" : "Alliés") : null,
+        };
+      }
+
+      if (EVENT_SKIP.has(e.name)) return { skip: true };
+      return { skip: true };
+    }
+
+    const GOLD_EVENT_TAGS = new Set(["kill", "death", "assist", "obj"]);
+
+    function extractEconomyTimeline(allEvents) {
+      const snaps = [];
+      for (const e of allEvents) {
+        if (e.type !== "info" || e.feature !== "tickdash") continue;
+        const td = e.info || {};
+        const eco = td.economy || (td.teamGold ? td : null);
+        if (!eco?.teamGold) continue;
+        const gameTime = Number(eco.gameTime ?? td.gameTime);
+        const at = Date.parse(e.at || td.polledAt);
+        snaps.push({
+          at: Number.isFinite(at) ? at : null,
+          gameTime: Number.isFinite(gameTime) ? gameTime : null,
+          teamGold: { ...eco.teamGold },
+        });
+      }
+      snaps.sort((a, b) => {
+        const ta = a.gameTime ?? a.at ?? 0;
+        const tb = b.gameTime ?? b.at ?? 0;
+        return ta - tb;
+      });
+      return snaps;
+    }
+
+    function findSnapshotAtOrBefore(timeline, gameSec) {
+      let best = null;
+      for (const s of timeline) {
+        if (s.gameTime == null || s.gameTime > gameSec) break;
+        best = s;
+      }
+      return best;
+    }
+
+    function findSnapshotBefore(timeline, gameSec) {
+      return findSnapshotAtOrBefore(timeline, gameSec);
+    }
+
+    function findSnapshotAfter(timeline, gameSec, delaySec = 2.5) {
+      const target = gameSec + delaySec;
+      for (const s of timeline) {
+        if (s.gameTime != null && s.gameTime >= target) return s;
+      }
+      return timeline[timeline.length - 1] || null;
+    }
+
+    function goldWindowForEvent(eventName, tag) {
+      if (eventName === "ace") return { lookbackSec: 18, afterDelaySec: 0.5 };
+      if (tag === "obj" && eventName === "turret_destroy") return { lookbackSec: 0, afterDelaySec: 4 };
+      return { lookbackSec: 1, afterDelaySec: 2.5 };
+    }
+
+    function teamDeficit(teamGold, myTeam) {
+      if (!myTeam || !teamGold) return null;
+      const enemy = myTeam === "ORDER" ? "CHAOS" : "ORDER";
+      return Number(teamGold[myTeam] || 0) - Number(teamGold[enemy] || 0);
+    }
+
+    function eventGoldSwing(isoAt, timeline, info, allEvents, fmt, eventName) {
+      if (timeline.length < 2) return null;
+      const gameSec = eventGameSec(isoAt, info, allEvents);
+      if (gameSec == null) return null;
+
+      const economy = liveEconomy(info);
+      if (!economy?.players?.length) return null;
+      const myTeam = resolveMyTeam(economy.players, info);
+      if (!myTeam) return null;
+
+      const win = goldWindowForEvent(eventName, fmt?.tag);
+      const before = findSnapshotAtOrBefore(timeline, gameSec - win.lookbackSec);
+      const after =
+        eventName === "ace"
+          ? findSnapshotAtOrBefore(timeline, gameSec + win.afterDelaySec)
+          : findSnapshotAfter(timeline, gameSec, win.afterDelaySec);
+      if (!before || !after || before === after) return null;
+
+      const d0 = teamDeficit(before.teamGold, myTeam);
+      const d1 = teamDeficit(after.teamGold, myTeam);
+      if (d0 == null || d1 == null) return null;
+
+      let swing = d1 - d0;
+      if (eventName === "ace") {
+        if (fmt?.aceFavorable !== false && swing < 0) return null;
+        if (fmt?.aceFavorable === false && swing > 0) return null;
+      }
+      if (Math.abs(swing) < 50) return null;
+      return { swing };
+    }
+
+    function fmtGoldSwing(swing, tag) {
+      const abs = fmtGold(Math.abs(swing));
+      if (swing > 0) {
+        if (tag === "kill" || tag === "assist") {
+          return `<span class="event-gold-lbl">Δ or</span><span>+${abs} vs ennemis</span>`;
+        }
+        return `<span class="event-gold-lbl">Δ or</span><span>+${abs} avantage équipe</span>`;
+      }
+      if (tag === "death") {
+        return `<span class="event-gold-lbl">Δ or</span><span>−${abs} vs ennemis</span>`;
+      }
+      return `<span class="event-gold-lbl">Δ or</span><span>−${abs} avantage équipe</span>`;
+    }
+
+    function eventGoldHtml(isoAt, fmt, timeline, info, allEvents, eventName) {
+      if (!GOLD_EVENT_TAGS.has(fmt.tag)) return "";
+      const data = eventGoldSwing(isoAt, timeline, info, allEvents, fmt, eventName);
+      if (!data) return "";
+      const cls = data.swing > 0 ? "up" : "down";
+      return `<div class="event-gold ${cls}">${fmtGoldSwing(data.swing, fmt.tag)}</div>`;
+    }
+
+    function eventsHtml(events, info) {
+      const merged = mergeUltEvents(events, detectLiveFrameUlts(info));
+      const timeline = extractEconomyTimeline(events);
+      const playerTimeline = extractPlayerTimeline(events);
+      const rows = [];
+      for (const e of merged) {
+        if (e.type !== "event") continue;
+        const fmt = formatEvent(e, info, merged, playerTimeline);
+        if (fmt.skip) continue;
+        const actorHtml = fmt.actor
+          ? `<div class="event-actor${fmt.actorMuted ? " muted" : ""}">${fmt.actor}</div>`
+          : "";
+        const goldHtml = eventGoldHtml(e.at, fmt, timeline, info, merged, e.name);
+        rows.push(`<div class="event">
+          <span class="t">${fmtEventTime(e.at, info, merged)}</span>
+          <span class="event-tag ${fmt.tag}">${fmt.tagLabel}</span>
+          <div class="event-body">
+            <div class="event-desc">${fmt.desc}</div>
+            ${actorHtml}
+            ${goldHtml}
+          </div>
+        </div>`);
+      }
+      if (!rows.length) {
+        return "<div class='waiting'>Aucun event combat</div>";
+      }
+      return rows.slice(0, MAX_EVENT_ROWS).join("");
+    }
+
+    let mounted = false;
+    let lastEvents = [];
+
+    function fmtNum(n) {
+      const v = Number(n);
+      if (!Number.isFinite(v)) return null;
+      if (v >= 1000) return `${(v / 1000).toFixed(1)}k`;
+      return String(Math.round(v));
+    }
+
+    function fmtDmgShare(info, state) {
+      const td = info.tickdash || {};
+      const dmg = info.damage || {};
+      const raw = td.damage_share ?? dmg.damage_share ?? dmg.total_damage_share ?? dmg.share;
+      if (raw != null && raw !== "") {
+        const n = Number(raw);
+        if (Number.isFinite(n) && n > 0) {
+          return n <= 1 ? `${Math.round(n * 100)}%` : `${Math.round(n)}%`;
+        }
+      }
+      const champDmg = td.champ_dmg ?? dmg.total_damage_dealt_to_champions;
+      const teamDmg = td.team_dmg;
+      if (champDmg != null && teamDmg != null && Number(teamDmg) > 0) {
+        const pct = (Number(champDmg) / Number(teamDmg)) * 100;
+        if (Number.isFinite(pct)) return `${Math.round(pct)}%`;
+      }
+      if (champDmg != null && Number(champDmg) > 0) {
+        return fmtNum(champDmg) || "—";
+      }
+      if (state?.ow?.started && !state?.ow?.featuresOk) return "OW…";
+      if (!state?.ow?.started) return "OW?";
+      return "—";
+    }
+
+    const ROLE_ORDER = { TOP: 0, JUNGLE: 1, MIDDLE: 2, BOTTOM: 3, UTILITY: 4, NONE: 5 };
+    const ROLE_SHORT = { TOP: "Top", JUNGLE: "Jg", MIDDLE: "Mid", BOTTOM: "Adc", UTILITY: "Sup", NONE: "—" };
+
+    function liveRespawnSec(player, polledAt) {
+      if (!player?.isDead) return 0;
+      const base = Number(player.respawnTimer);
+      if (!Number.isFinite(base) || base <= 0) return 0;
+      if (!polledAt) return Math.ceil(base);
+      const pollMs = Date.parse(polledAt);
+      if (!Number.isFinite(pollMs)) return Math.ceil(base);
+      return Math.max(0, Math.ceil(base - (Date.now() - pollMs) / 1000));
+    }
+
+    function enemyRespawnRows(info) {
+      const economy = liveEconomy(info);
+      if (!economy?.players?.length) return null;
+      const myTeam = resolveMyTeam(economy.players, info);
+      if (!myTeam) return null;
+      const polledAt = economy.polledAt;
+      return economy.players
+        .filter((p) => p.team !== myTeam)
+        .sort((a, b) => (ROLE_ORDER[a.position] ?? 9) - (ROLE_ORDER[b.position] ?? 9))
+        .map((p) => ({ ...p, remain: liveRespawnSec(p, polledAt) }));
+    }
+
+    function enemyChipHtml(player) {
+      const role = ROLE_SHORT[player.position] || "—";
+      if (!player.isDead || player.remain <= 0) {
+        return `<div class="enemy-chip alive" title="${player.name}">
+          <span class="champ">${player.champion}</span>
+          <span class="role">${role}</span>
+          <span class="timer up">UP · ${player.level}</span>
+        </div>`;
+      }
+      const soon = player.remain <= 5 ? " soon" : "";
+      return `<div class="enemy-chip dead" title="${player.name}">
+        <span class="champ">${player.champion}</span>
+        <span class="role">${role}</span>
+        <span class="timer${soon}">${player.remain}s</span>
+      </div>`;
+    }
+
+    function updateEnemyNav(info) {
+      const el = document.getElementById("enemy-nav-timers");
+      if (!el) return;
+      const rows = enemyRespawnRows(info);
+      if (rows === null) {
+        const lcErr = lastLive?.error;
+        const hint = lcErr?.includes("outdated")
+          ? lcErr
+          : lcErr || "redémarre le daemon (npm start)";
+        el.innerHTML = `<span class="enemy-nav-wait">Respawn — Live Client (:2999) · ${hint}</span>`;
+        return;
+      }
+      if (!rows.length) {
+        el.innerHTML = `<span class="enemy-nav-wait">Aucun ennemi — ajoute des bots adverses (Practice Tool)</span>`;
+        return;
+      }
+      const dead = rows.filter((p) => p.isDead && p.remain > 0).length;
+      el.innerHTML = rows.map(enemyChipHtml).join("");
+      const summary = document.getElementById("enemy-nav-summary");
+      if (summary) summary.textContent = dead ? `${dead} mort${dead > 1 ? "s" : ""}` : "";
+    }
+
+    function detectGameEnd(events) {
+      for (let i = events.length - 1; i >= 0; i--) {
+        const e = events[i];
+        if (e.type !== "event") continue;
+        const name = e.name || eventData(e).name;
+        if (name === "victory" || name === "defeat") return name;
+      }
+      return null;
+    }
+
+    function persistEndSnapshot() {
+      if (!endSnapshot) return;
+      try {
+        sessionStorage.setItem(END_SNAPSHOT_KEY, JSON.stringify(endSnapshot));
+      } catch {
+        /* ignore quota errors */
+      }
+    }
+
+    function openPostmortemPage() {
+      persistEndSnapshot();
+      endSnapshotDismissed = true;
+      const el = document.getElementById("end-overlay");
+      if (el) {
+        el.hidden = true;
+        el.innerHTML = "";
+      }
+      window.location.href = "/postmortem";
+    }
+
+    function endOverlaySplashHtml(snapshot) {
+      const { result, info, gameSec } = snapshot;
+      const si = info.summoner_info || {};
+      const title = result === "victory" ? "Victoire" : "Défaite";
+      return `<div class="end-card end-splash">
+        <div class="end-head ${result}">
+          <div class="end-title">${title}</div>
+          <div class="end-sub">${si.champion || "—"} · ${fmtGameTime(gameSec)} · ${si.name || "Toi"}</div>
+        </div>
+        <button type="button" class="end-close">Continuer</button>
+      </div>`;
+    }
+
+    function updateEndOverlay(info, events, status, state) {
+      const el = document.getElementById("end-overlay");
+      if (!el) return;
+
+      const sessionId = status?.session?.id || null;
+      if (sessionId && endSnapshot?.sessionId && endSnapshot.sessionId !== sessionId) {
+        endSnapshot = null;
+      }
+
+      const result = detectGameEnd(events);
+      if (result && !endSnapshot && sessionId) {
+        const economy = liveEconomy(info);
+        endSnapshot = {
+          sessionId,
+          result,
+          economy: economy ? JSON.parse(JSON.stringify(economy)) : null,
+          info: JSON.parse(JSON.stringify(info)),
+          gameSec: currentGameSec(info, events, status, state),
+          killProximity: state.killProximity ? JSON.parse(JSON.stringify(state.killProximity)) : null,
+        };
+        persistEndSnapshot();
+      }
+
+      if (!endSnapshot?.economy || endSnapshotDismissed) {
+        el.hidden = true;
+        if (endSnapshotDismissed) el.innerHTML = "";
+        return;
+      }
+
+      el.hidden = false;
+      el.innerHTML = endOverlaySplashHtml(endSnapshot);
+    }
+
+    function updateNav(info, state, status) {
+      const si = info.summoner_info || {};
+      const k = info.kill?.kills ?? "—";
+      const d = info.death?.deaths ?? "—";
+      const a = info.assist?.assists ?? "—";
+      const lvl = info.level?.level ?? "—";
+
+      const economy = liveEconomy(info);
+      const gd = goldDelta(economy, info);
+      const gdLabel = gd ? gd.label.replace("Gold ", "") : "Gold";
+      const gdVal = fmtGoldDeltaNav(gd);
+      const gdClass = gd?.kind || "";
+      const lobby = economy?.players?.length ? scoreLobbyMix(economy.players) : null;
+      const mePlayer = economy?.players?.find((p) => isLocalPlayer(p, info));
+      const powerRow =
+        mePlayer && lobby?.scored?.find((s) => normChamp(s.champion) === normChamp(mePlayer.champion));
+      const power = powerRow ? Math.round(powerRow.mix) : myPowerIndex(economy, info);
+      const myTeam = economy?.players?.length ? resolveMyTeam(economy.players, info) : null;
+      const pd = teamPowerDelta(lobby?.totals, myTeam);
+      const pdVal = fmtPowerDelta(pd);
+      const pdClass = powerDeltaClass(pd);
+      const teamPowerHtml = teamPowerVsHtml(lobby?.totals, myTeam);
+
+      const st = status || lastStatus;
+      const gameSec = currentGameSec(info, lastEvents, st, state);
+      const gameLive = gameClockLive(info, state);
+
+      document.getElementById("nav-stats").innerHTML = `
+        <div class="nav-stat player">
+          <span class="value">${si.name || "—"} · <span class="sub">${si.champion || "—"} lvl ${lvl}</span></span>
+        </div>
+        <div class="nav-divider"></div>
+        <div class="nav-stat kda">
+          <span class="label">KDA</span>
+          <span class="value"><span class="k">${k}</span>/<span class="d">${d}</span>/<span class="a">${a}</span></span>
+        </div>
+        <div class="nav-divider"></div>
+        <div class="nav-stat gold-delta">
+          <span class="label">${gdLabel}</span>
+          <span class="value ${gdClass}">${gdVal}</span>
+        </div>
+        <div class="nav-divider"></div>
+        <div class="nav-stat power">
+          <span class="label">Puissance</span>
+          <span class="value">${power != null ? power : "—"}</span>
+        </div>
+        <div class="nav-divider"></div>
+        <div class="nav-stat power-delta">
+          <span class="label">Δ Puiss.</span>
+          <span class="value ${pdClass}">${pdVal}</span>
+        </div>
+        <div class="nav-divider"></div>
+        <div class="nav-stat team-power">
+          <span class="label">Puiss. eq.</span>
+          <span class="value">${teamPowerHtml}</span>
+        </div>
+        <div class="nav-divider"></div>
+        <div class="nav-stat"><span class="label">Game</span><span class="value" id="game-clock">${fmtGameTime(gameSec)}${gameLive ? "" : " ~"}</span></div>
+        <div class="nav-divider"></div>
+        <div class="nav-stat"><span class="label">Région</span><span class="value">${si.region || "—"}</span></div>
+        <div class="nav-stat"><span class="label">Match</span><span class="value">${info.matchState?.matchId || "—"}</span></div>
+        <div class="nav-stat"><span class="label">GEP</span><span class="value">${info.gep_internal?.version_info?.local_version || "—"}</span></div>
+      `;
+    }
+
+    function mountApp() {
+      document.getElementById("app").innerHTML = `
+        <div class="right-col" style="grid-column: 1 / -1">
+          <div class="live-row">
+            <div class="card">
+              <h2>Jungle camps</h2>
+              <div class="card-body scroll-pane" id="camps-scroll">
+                <div class="scroll-inner" id="camps-body"></div>
+              </div>
+            </div>
+            <div class="card events-col">
+              <div class="strongest-row">
+                <div class="strongest-panel ally">
+                  <h2>Strongest Ally</h2>
+                  <div class="strongest-body" id="strongest-ally-body"></div>
+                </div>
+                <div class="strongest-panel opponent">
+                  <h2>Strongest Opponent</h2>
+                  <div class="strongest-body" id="strongest-body"></div>
+                </div>
+              </div>
+              <div class="events-panel">
+                <h2>Events</h2>
+                <div class="toolbar">Combat + ultis des autres (Tab) · pas ton ulti</div>
+                <div class="card-body scroll-pane events" id="events-scroll">
+                  <div class="scroll-inner" id="events-body"></div>
+                </div>
+              </div>
+            </div>
+            <div class="money-col">
+              <div class="card money-card">
+                <h2>Money Management</h2>
+                <div class="card-body scroll-pane" id="money-scroll">
+                  <div class="scroll-inner" id="money-body"></div>
+                </div>
+              </div>
+              <div class="target-panel">
+                <h2>Rôle &amp; Main Targets</h2>
+                <div class="target-body" id="target-body"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      mounted = true;
+    }
+
+    function render(state, status, events) {
+      lastEvents = events;
+      let info = deepDecode(state.info || {});
+      syncLastLive(state, status);
+      if (status?.session?.id && status.session.id !== render.sessionId) {
+        matchStartWallMs = null;
+        maxGameTimeSeen = 0;
+        endSnapshot = null;
+        endSnapshotDismissed = false;
+        try {
+          sessionStorage.removeItem(END_SNAPSHOT_KEY);
+        } catch {
+          /* ignore */
+        }
+        render.sessionId = status.session.id;
+        for (const k of Object.keys(campKillMemory)) {
+          if (!k.startsWith(`${status.session.id}:`)) delete campKillMemory[k];
+        }
+      }
+      lastInfo = info;
+
+      const waiting = status?.waiting || state?.waiting;
+      document.getElementById("conn").textContent = waiting ? "en attente" : "live";
+      document.getElementById("conn").className = waiting ? "pill" : "pill ok";
+      const ow = state.ow || {};
+      const owEl = document.getElementById("ow-pill");
+      if (ow.featuresOk || ow.liveClient) {
+        owEl.textContent = ow.source === "daemon" ? "LC ✓" : ow.liveClient ? "OW ✓" : "OW gep";
+        owEl.className = "pill ok";
+      } else if (ow.started) {
+        owEl.textContent = "OW wait";
+        owEl.className = "pill";
+      } else {
+        owEl.textContent = "OW —";
+        owEl.className = "pill";
+      }
+      document.getElementById("events-pill").textContent = `${state.eventCount || 0} events`;
+      document.getElementById("session-pill").textContent = status?.session?.game || (waiting ? "—" : "session");
+
+      updateNav(info, state, status);
+      updateEnemyNav(info);
+      updateEndOverlay(info, events, status, state);
+
+      if (!mounted) mountApp();
+      document.getElementById("camps-body").innerHTML = campsHtml(info.jungle_camps, events, info);
+      document.getElementById("strongest-ally-body").innerHTML = strongestAllyHtml(info);
+      document.getElementById("strongest-body").innerHTML = strongestOpponentHtml(info);
+      document.getElementById("events-body").innerHTML = eventsHtml(events, info);
+      document.getElementById("money-body").innerHTML = moneyHtml(info);
+      document.getElementById("target-body").innerHTML = mainTargetsHtml(info);
+    }
+
+    function syncLastLive(state, status) {
+      const sid = status?.session?.id || null;
+      if (sid !== tickSessionId) {
+        tickSessionId = sid;
+        lastLive = null;
+      }
+      if (status?.waiting && !state.livePlayers?.players?.length) {
+        lastLive = null;
+        return;
+      }
+      if (state.livePlayers?.players?.length) {
+        lastLive = state.livePlayers.ok !== false ? { ok: true, ...state.livePlayers } : state.livePlayers;
+        return;
+      }
+      if (!lastLive?.players?.length) {
+        lastLive = {
+          ok: false,
+          error: status?.version >= 2 ? "live client unavailable" : "daemon outdated — npm start",
+        };
+      }
+    }
+
+    async function tick() {
+      try {
+        const [stateRes, statusRes, evRes] = await Promise.all([
+          fetch("/gep"),
+          fetch("/status"),
+          fetch("/gep/events?limit=800"),
+        ]);
+        if (!stateRes.ok || !statusRes.ok) throw new Error("daemon unreachable");
+
+        const state = await stateRes.json();
+        const status = await statusRes.json();
+        const { events } = await evRes.json();
+
+        offlineStreak = 0;
+        syncLastLive(state, status);
+        lastState = state;
+        lastStatus = status;
+        lastEventsCache = events;
+
+        render(state, status, events);
+      } catch (err) {
+        offlineStreak += 1;
+        const conn = document.getElementById("conn");
+        conn.textContent = offlineStreak > 2 ? "offline" : "reconnect…";
+        conn.className = "pill";
+
+        if (mounted && lastState) {
+          render(lastState, lastStatus, lastEventsCache);
+          return;
+        }
+
+        if (!mounted) {
+          document.getElementById("app").innerHTML =
+            `<div class="waiting">Daemon offline — lance <code>npm start</code> ou <code>restart-daemon.bat</code><br/><small>${err.message}</small></div>`;
+        }
+      }
+    }
+
+    tick();
+    setInterval(tick, 1000);
+
+    fetch("/items-completed.json")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!data?.completed) return;
+        itemsCompletedDico = data.completed;
+        itemsCompletedPatch = data.patch || null;
+        if (lastState) render(lastState, lastStatus, lastEventsCache);
+      })
+      .catch(() => {});
+
+    document.getElementById("end-overlay").addEventListener("click", (ev) => {
+      if (ev.target.closest(".end-close")) openPostmortemPage();
+    });
+  </script>
+</body>
+</html>

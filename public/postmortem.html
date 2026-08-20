@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TickDash — Post-mortem</title>
+  <style>
+    :root {
+      --bg: #080a10;
+      --panel: #101622;
+      --border: #252b3a;
+      --text: #e6eaf2;
+      --muted: #8b93a7;
+      --accent: #c8aa6e;
+      --green: #3dd68c;
+      --red: #f07178;
+      --power: #9d8cff;
+      --power-dim: #7c6bb8;
+      --power-up: #6ee7d7;
+      --power-down: #ff9ecd;
+      --team-us: #3dd68c;
+      --team-them: #ff9f43;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font: 14px/1.45 "Segoe UI", system-ui, sans-serif;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .pm-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, #121722, #0d1118);
+    }
+    .pm-brand {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .pm-brand h1 {
+      margin: 0;
+      font-size: 18px;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+    }
+    .pm-brand span {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+    .pm-back {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #141a28;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .pm-back:hover { color: var(--text); border-color: #3a4560; }
+    main {
+      flex: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 28px 16px 40px;
+    }
+    #postmortem-root {
+      width: min(980px, 100%);
+    }
+    .pm-empty-state {
+      text-align: center;
+      padding: 80px 24px;
+      color: var(--muted);
+    }
+    .pm-empty-state .sub { font-size: 13px; margin-top: 8px; }
+    .pm-empty-state .pm-back { margin-top: 20px; }
+    .pm-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+    }
+    .pm-head {
+      padding: 28px 24px 22px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .pm-head.victory { background: linear-gradient(180deg, #152818, #101622); }
+    .pm-head.defeat { background: linear-gradient(180deg, #281518, #101622); }
+    .pm-title {
+      font-size: 42px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .pm-head.victory .pm-title { color: #7fd4a8; }
+    .pm-head.defeat .pm-title { color: #ff9a9a; }
+    .pm-sub { font-size: 14px; color: var(--muted); margin-top: 8px; }
+    .pm-session {
+      margin-top: 6px;
+      font-size: 11px;
+      color: #5a6278;
+      font-family: ui-monospace, Consolas, monospace;
+    }
+    .pm-stats {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .pm-stat .lbl {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      text-align: center;
+    }
+    .pm-stat .val {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--accent);
+      text-align: center;
+      margin-top: 4px;
+    }
+    .pm-stat .val.power {
+      color: var(--power);
+      text-shadow: 0 0 14px rgba(157, 140, 255, 0.4);
+    }
+    .pm-stat .val.benefit { color: var(--green); }
+    .pm-stat .val.deficit { color: var(--red); }
+    .pm-stat .val.power-up { color: var(--power-up); }
+    .pm-stat .val.power-down { color: var(--power-down); }
+    .pm-stat .val.power-team .team-power-us { color: var(--team-us); }
+    .pm-stat .val.power-team .team-power-them { color: var(--team-them); }
+    .pm-stat .val.power-team { font-size: 18px; }
+    .pm-stat .val.sub { font-size: 18px; color: var(--text); }
+    .pm-teams {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      padding: 18px;
+    }
+    @media (max-width: 760px) {
+      .pm-teams { grid-template-columns: 1fr; }
+    }
+    .pm-team h2 .team-power-us { color: var(--team-us); }
+    .pm-team h2 .team-power-them { color: var(--team-them); }
+    .pm-team h2 {
+      margin: 0 0 8px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+    .pm-cols {
+      display: grid;
+      grid-template-columns: 1fr auto auto auto;
+      gap: 8px;
+      padding: 0 8px 6px;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #5a6278;
+    }
+    .pm-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto auto;
+      gap: 8px;
+      align-items: center;
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 13px;
+      border: 1px solid transparent;
+    }
+    .pm-row.me {
+      background: #171322;
+      border-color: #4a3058;
+    }
+    .pm-row .name { font-weight: 700; }
+    .pm-row .mix {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--accent);
+      text-shadow: 0 0 10px rgba(200, 170, 110, 0.35);
+    }
+    .pm-empty { padding: 8px; color: var(--muted); }
+    .pm-duo {
+      padding: 0 18px 18px;
+      border-top: 1px solid var(--border);
+    }
+    .pm-duo h2 {
+      margin: 16px 0 8px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+    .pm-duo-cols {
+      display: grid;
+      grid-template-columns: 1fr auto auto auto;
+      gap: 8px;
+      padding: 0 8px 6px;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #5a6278;
+    }
+    .pm-duo-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto auto;
+      gap: 8px;
+      align-items: center;
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 13px;
+      border: 1px solid transparent;
+    }
+    .pm-duo-row.top {
+      background: #171322;
+      border-color: #4a3058;
+    }
+    .pm-duo-row .name { font-weight: 700; }
+    .pm-duo-row .sub { font-size: 11px; color: var(--muted); }
+    .pm-duo-row .total {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <header class="pm-top">
+    <div class="pm-brand">
+      <h1>TickDash</h1>
+      <span>Post-mortem</span>
+    </div>
+    <a class="pm-back" href="/">Retour au live</a>
+  </header>
+  <main>
+    <div id="postmortem-root">
+      <div class="pm-empty-state"><p>Chargement…</p></div>
+    </div>
+  </main>
+  <script src="/postmortem.js"></script>
+</body>
+</html>
