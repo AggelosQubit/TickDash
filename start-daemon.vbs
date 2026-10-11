@@ -9,4 +9,5 @@ If Not fso.FolderExists(logsDir) Then
 End If
 
 shell.CurrentDirectory = dir
-shell.Run "cmd /c node daemon.js 1>> logs\daemon.log 2>&1", 0, False
+shell.Run "cmd /c node """ & dir & "\scripts\build-tickdash-exe.js""", 0, True
+shell.Run "cmd /c """"" & dir & "\TickDash.exe"" --watch daemon.js 1>> """ & dir & "\logs\daemon.log"" 2>&1""", 0, False

@@ -107,6 +107,129 @@
       flex-shrink: 0;
       min-height: 88px;
     }
+    .lobby-ranks {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 10px 18px 12px;
+      border-bottom: 1px solid var(--border);
+      background: #10151f;
+      flex-shrink: 0;
+    }
+    .lobby-ranks-bar {
+      display: flex;
+      justify-content: flex-end;
+    }
+    .ranks-reload {
+      appearance: none;
+      border: 1px solid #3a4458;
+      background: #1a2230;
+      color: var(--text);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font: 600 13px/1 "Segoe UI", system-ui, sans-serif;
+      cursor: pointer;
+    }
+    .ranks-reload:hover { border-color: var(--accent); color: var(--accent); }
+    .ranks-reload:disabled { opacity: 0.6; cursor: default; }
+    .lobby-ranks-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .lobby-ranks-grid[hidden] { display: none; }
+    .lobby-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      table-layout: fixed;
+      background: #121722;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .lobby-table.us { box-shadow: inset 3px 0 0 var(--team-us); }
+    .lobby-table.them { box-shadow: inset 3px 0 0 var(--team-them); }
+    .lobby-table caption {
+      caption-side: top;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 8px 12px 2px;
+      background: #121722;
+    }
+    .lobby-table.us caption { color: var(--team-us); }
+    .lobby-table.them caption { color: var(--team-them); }
+    .lobby-table th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 6px 12px 8px;
+      border-bottom: 1px solid var(--border);
+      background: #121722;
+    }
+    .lobby-table th:nth-child(1) { width: 64px; }
+    .lobby-table th:nth-child(3) { width: 132px; }
+    .lobby-table th:nth-child(4) { width: 64px; text-align: right; }
+    .lobby-table td {
+      padding: 8px 12px;
+      font-size: 15px;
+      border-top: 1px solid #1c2330;
+      vertical-align: middle;
+      background: #121722;
+    }
+    .lobby-table tbody tr:nth-child(odd) td { background: #171d2a; }
+    .lobby-table td.role {
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+    .lobby-table td.who {
+      font-weight: 650;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .lobby-table td.who .tag {
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 12px;
+      margin-left: 6px;
+    }
+    .lobby-table td.rank {
+      font-weight: 700;
+      font-size: 16px;
+      white-space: nowrap;
+    }
+    .lobby-table td.lp {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .lobby-table td.lobby-empty {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 16px 12px;
+    }
+    .tier-iron { color: #b7c0d0; }
+    .tier-bronze { color: #e0a07a; }
+    .tier-silver { color: #e4eaf3; }
+    .tier-gold { color: #f0d078; }
+    .tier-platinum { color: #7ad4d4; }
+    .tier-emerald { color: #5ee0a0; }
+    .tier-diamond { color: #9ec8ff; }
+    .tier-master { color: #d2b0ff; }
+    .tier-grandmaster { color: #ff9a92; }
+    .tier-challenger { color: #ffe7a8; }
     .enemy-nav-label {
       font-size: 12px;
       text-transform: uppercase;
@@ -381,12 +504,22 @@
     .strongest-panel + .strongest-panel { border-left: 1px solid var(--border); }
     .strongest-panel h2 {
       margin: 0;
-      padding: 10px 14px;
+      padding: 6px 14px 10px;
       font-size: 12px;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       border-bottom: 1px solid var(--border);
     }
+    .level-sum {
+      margin: 0;
+      padding: 10px 14px 0;
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .level-sum.us { color: var(--team-us); }
+    .level-sum.them { color: var(--team-them); }
     .strongest-panel.opponent h2 {
       color: #ffaaaa;
       background: #120f18;
@@ -732,6 +865,15 @@
       background: #12101a;
     }
     .target-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+    .build-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .build-row img {
+      width: 42px;
+      height: 42px;
+      border-radius: 6px;
+      background: #0b0e14;
+      border: 1px solid var(--border);
+    }
+    .build-note { font-size: 11px; color: var(--muted); }
     .target-wait { font-size: 12px; color: var(--muted); }
     .target-role-row {
       display: flex;
@@ -973,6 +1115,41 @@
       margin-top: 4px;
       line-height: 1.3;
     }
+    .clip-banner {
+      width: 100%;
+      flex-shrink: 0;
+      border-top: 1px solid var(--border);
+      background: linear-gradient(180deg, #151b28, var(--panel));
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+    .clip-viewport {
+      overflow: hidden;
+      flex: 1;
+      min-width: 0;
+      margin: 0 18px;
+    }
+    .clip-track {
+      display: flex;
+      width: max-content;
+      animation: clip-scroll linear infinite;
+    }
+    .clip-text {
+      white-space: nowrap;
+      padding-right: 4rem;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+    }
+    .clip-banner.fight-no .clip-text { color: var(--red); }
+    .clip-banner.fight-maybe .clip-text { color: var(--accent); }
+    .clip-banner.fight-yes .clip-text { color: var(--green); }
+    @keyframes clip-scroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
   </style>
 </head>
 <body>
@@ -989,6 +1166,16 @@
     </div>
   </header>
 
+  <section class="lobby-ranks" id="lobby-ranks">
+    <div class="lobby-ranks-bar">
+      <button type="button" class="ranks-reload" id="ranks-reload">Recharger les rangs</button>
+    </div>
+    <div class="lobby-ranks-grid" id="lobby-ranks-grid" hidden>
+      <div class="lobby-col us" id="lobby-allies"></div>
+      <div class="lobby-col them" id="lobby-opponents"></div>
+    </div>
+  </section>
+
   <nav class="enemy-nav" id="enemy-nav">
     <span class="enemy-nav-label"><strong>Ennemis</strong><br/>respawn</span>
     <div class="enemy-nav-timers" id="enemy-nav-timers">
@@ -1000,6 +1187,14 @@
   <main id="app">
     <div class="waiting">Chargement GEP…</div>
   </main>
+  <footer class="clip-banner fight-wait" id="clip-banner" aria-label="Conseil de fight">
+    <div class="clip-viewport">
+      <div class="clip-track" id="clip-track">
+        <span class="clip-text">EN ATTENTE</span>
+        <span class="clip-text" aria-hidden="true">EN ATTENTE</span>
+      </div>
+    </div>
+  </footer>
   <div id="end-overlay" class="end-overlay" hidden></div>
 
   <script>
@@ -1803,6 +1998,28 @@
         </div>
         ${others ? `<div class="strongest-rank">${others}</div>` : ""}
       </div>`;
+    }
+
+    function teamLevelSum(players, team) {
+      return players
+        .filter((p) => p.team === team)
+        .reduce((total, p) => total + (Number(p.level) || 0), 0);
+    }
+
+    function renderTeamLevels(info) {
+      const allyEl = document.getElementById("level-sum-ally");
+      const oppEl = document.getElementById("level-sum-opp");
+      if (!allyEl || !oppEl) return;
+      const economy = liveEconomy(info);
+      const myTeam = economy?.players?.length ? resolveMyTeam(economy.players, info) : null;
+      if (!myTeam) {
+        allyEl.textContent = "—";
+        oppEl.textContent = "—";
+        return;
+      }
+      const enemyTeam = myTeam === "ORDER" ? "CHAOS" : "ORDER";
+      allyEl.textContent = String(teamLevelSum(economy.players, myTeam));
+      oppEl.textContent = String(teamLevelSum(economy.players, enemyTeam));
     }
 
     function strongestOpponentHtml(info) {
@@ -2852,6 +3069,7 @@
           info: JSON.parse(JSON.stringify(info)),
           gameSec: currentGameSec(info, events, status, state),
           killProximity: state.killProximity ? JSON.parse(JSON.stringify(state.killProximity)) : null,
+          powerScalars: status?.powerScalars || { sessionId, samples: [] },
         };
         persistEndSnapshot();
       }
@@ -2944,10 +3162,12 @@
             <div class="card events-col">
               <div class="strongest-row">
                 <div class="strongest-panel ally">
+                  <div class="level-sum us" id="level-sum-ally">—</div>
                   <h2>Strongest Ally</h2>
                   <div class="strongest-body" id="strongest-ally-body"></div>
                 </div>
                 <div class="strongest-panel opponent">
+                  <div class="level-sum them" id="level-sum-opp">—</div>
                   <h2>Strongest Opponent</h2>
                   <div class="strongest-body" id="strongest-body"></div>
                 </div>
@@ -2970,6 +3190,10 @@
               <div class="target-panel">
                 <h2>Rôle &amp; Main Targets</h2>
                 <div class="target-body" id="target-body"></div>
+              </div>
+              <div class="target-panel">
+                <h2>Build final</h2>
+                <div class="target-body" id="build-body"></div>
               </div>
             </div>
           </div>
@@ -3025,9 +3249,11 @@
       document.getElementById("camps-body").innerHTML = campsHtml(info.jungle_camps, events, info);
       document.getElementById("strongest-ally-body").innerHTML = strongestAllyHtml(info);
       document.getElementById("strongest-body").innerHTML = strongestOpponentHtml(info);
+      renderTeamLevels(info);
       document.getElementById("events-body").innerHTML = eventsHtml(events, info);
       document.getElementById("money-body").innerHTML = moneyHtml(info);
       document.getElementById("target-body").innerHTML = mainTargetsHtml(info);
+      renderFinalBuild(status);
     }
 
     function syncLastLive(state, status) {
@@ -3052,6 +3278,225 @@
       }
     }
 
+    let clipBannerText = "";
+    let clipBannerWidth = 0;
+
+    function fightCall(signed) {
+      if (signed == null) return { text: "EN ATTENTE", tone: "wait" };
+      if (signed <= -35) return { text: `NE PEUT PAS FIGHT CURRENT PUISS DELTA : ${signed}`, tone: "no" };
+      if (signed >= 35) return { text: "FIGHT ADVISED", tone: "yes" };
+      return { text: "FIGHT POSSIBLE", tone: "maybe" };
+    }
+
+    function currentFightCall() {
+      const info = lastInfo || {};
+      const economy = liveEconomy(info);
+      const myTeam = economy?.players?.length ? resolveMyTeam(economy.players, info) : null;
+      const lobby = economy?.players?.length ? scoreLobbyMix(economy.players) : null;
+      const pd = teamPowerDelta(lobby?.totals, myTeam);
+      if (!pd) return fightCall(null);
+      const signed = pd.kind === "deficit" ? -pd.amount : pd.amount;
+      return fightCall(signed);
+    }
+
+    function syncClipBannerHeight() {
+      const header = document.querySelector("header");
+      const banner = document.getElementById("clip-banner");
+      if (!header || !banner) return;
+      banner.style.height = `${header.getBoundingClientRect().height}px`;
+    }
+
+    function updateClipBanner(force) {
+      syncClipBannerHeight();
+      const banner = document.getElementById("clip-banner");
+      const track = document.getElementById("clip-track");
+      const viewport = track?.parentElement;
+      if (!banner || !track || !viewport) return;
+      const call = currentFightCall();
+      const text = call.text;
+      banner.classList.remove("fight-wait", "fight-no", "fight-maybe", "fight-yes");
+      banner.classList.add(`fight-${call.tone}`);
+      const view = Math.max(viewport.getBoundingClientRect().width, 1);
+      if (!force && text === clipBannerText && Math.abs(view - clipBannerWidth) < 8) return;
+      clipBannerText = text;
+      clipBannerWidth = view;
+      const probe = document.createElement("span");
+      probe.className = "clip-text";
+      probe.textContent = text;
+      track.replaceChildren(probe);
+      const one = Math.max(probe.getBoundingClientRect().width, 1);
+      let count = Math.ceil((view * 2) / one);
+      if (count < 2) count = 2;
+      if (count % 2) count += 1;
+      const spans = [];
+      for (let i = 0; i < count; i++) {
+        const span = document.createElement("span");
+        span.className = "clip-text";
+        span.textContent = text;
+        if (i > 0) span.setAttribute("aria-hidden", "true");
+        spans.push(span);
+      }
+      track.replaceChildren(...spans);
+      const seconds = Math.max(track.scrollWidth / 2 / 70, 8);
+      track.style.animation = "none";
+      void track.offsetWidth;
+      track.style.animation = "";
+      track.style.animationDuration = `${seconds}s`;
+    }
+
+    function escapeAttr(value) {
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/"/g, "&quot;")
+        .replace(/</g, "&lt;");
+    }
+
+    let buildKey = "";
+    function renderFinalBuild(status) {
+      const root = document.getElementById("build-body");
+      if (!root) return;
+      const build = status?.build;
+      const items = build?.items || [];
+      if (!items.length) {
+        buildKey = "";
+        root.innerHTML = `<div class="target-wait">${build?.error || "En attente du champion"}</div>`;
+        return;
+      }
+      const key = items.map((it) => it.id).join(",");
+      if (key === buildKey) return;
+      buildKey = key;
+      const note = [build.champion, build.role, build.patch].filter(Boolean).join(" · ");
+      root.innerHTML = `<div class="build-row">${items
+        .map(
+          (it) =>
+            `<img src="${escapeAttr(it.icon)}" alt="${escapeAttr(it.name)}" title="${escapeAttr(it.name)}">`
+        )
+        .join("")}</div>${note ? `<div class="build-note">${escapeAttr(note)}</div>` : ""}`;
+    }
+
+    const LOBBY_ROLE_ORDER = ["Top", "Jgl", "Mid", "Adc", "Sup"];
+
+    function sortLobbyRows(rows) {
+      return [...(rows || [])].sort((a, b) => {
+        const ia = LOBBY_ROLE_ORDER.indexOf(a.position);
+        const ib = LOBBY_ROLE_ORDER.indexOf(b.position);
+        return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
+      });
+    }
+
+    function splitSummoner(name) {
+      const raw = name || "—";
+      const cut = raw.indexOf("#");
+      if (cut <= 0) return { game: raw, tag: "" };
+      return { game: raw.slice(0, cut), tag: raw.slice(cut) };
+    }
+
+    function rankHead(row) {
+      const label = row?.label || "—";
+      const cut = label.indexOf(" · ");
+      return cut < 0 ? label : label.slice(0, cut);
+    }
+
+    function renderLobbySide(root, title, rows, side) {
+      const table = document.createElement("table");
+      table.className = `lobby-table ${side}`;
+      const caption = document.createElement("caption");
+      caption.textContent = title;
+      const thead = document.createElement("thead");
+      const headRow = document.createElement("tr");
+      for (const heading of ["Rôle", "Joueur", "Rang", "LP"]) {
+        const th = document.createElement("th");
+        th.textContent = heading;
+        headRow.appendChild(th);
+      }
+      thead.appendChild(headRow);
+      const tbody = document.createElement("tbody");
+      const list = sortLobbyRows(rows);
+      if (!list.length) {
+        const tr = document.createElement("tr");
+        const td = document.createElement("td");
+        td.colSpan = 4;
+        td.className = "lobby-empty";
+        td.textContent = side === "them" ? "Dès le début de la partie" : "En attente";
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+      } else {
+        for (const row of list) {
+          const tr = document.createElement("tr");
+          const role = document.createElement("td");
+          role.className = "role";
+          role.textContent = row.position || "—";
+          const who = document.createElement("td");
+          who.className = "who";
+          const parts = splitSummoner(row.name);
+          const game = document.createElement("span");
+          game.className = "game";
+          game.textContent = parts.game;
+          who.appendChild(game);
+          if (parts.tag) {
+            const tag = document.createElement("span");
+            tag.className = "tag";
+            tag.textContent = parts.tag;
+            who.appendChild(tag);
+          }
+          const rank = document.createElement("td");
+          const tier = String(row.tier || "").toLowerCase();
+          rank.className = tier ? `rank tier-${tier}` : "rank";
+          rank.textContent = rankHead(row);
+          const lp = document.createElement("td");
+          lp.className = "lp";
+          lp.textContent = row.label === "…" ? "…" : row.lp == null ? "—" : String(row.lp);
+          tr.append(role, who, rank, lp);
+          tbody.appendChild(tr);
+        }
+      }
+      table.append(caption, thead, tbody);
+      root.replaceChildren(table);
+    }
+
+    let lobbyRanksKey = "";
+    function renderLobbyRanks(status) {
+      const root = document.getElementById("lobby-ranks");
+      const grid = document.getElementById("lobby-ranks-grid");
+      if (!root || !grid) return;
+      const ranks = status?.ranks || { allies: [], opponents: [] };
+      const allies = ranks.allies || [];
+      const opponents = ranks.opponents || [];
+      const key = JSON.stringify({ allies, opponents });
+      if (!allies.length && !opponents.length) {
+        lobbyRanksKey = "";
+        grid.hidden = true;
+        return;
+      }
+      grid.hidden = false;
+      if (key === lobbyRanksKey) return;
+      lobbyRanksKey = key;
+      renderLobbySide(document.getElementById("lobby-allies"), "Alliés", allies, "us");
+      renderLobbySide(document.getElementById("lobby-opponents"), "Adversaires", opponents, "them");
+    }
+
+    const ranksReloadBtn = document.getElementById("ranks-reload");
+    ranksReloadBtn.addEventListener("click", async () => {
+      if (ranksReloadBtn.disabled) return;
+      ranksReloadBtn.disabled = true;
+      ranksReloadBtn.textContent = "Chargement…";
+      try {
+        const res = await fetch("/ranks/reload", { method: "POST" });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || "rechargement impossible");
+        lobbyRanksKey = "";
+        const ranks = data.ranks || { allies: [], opponents: [] };
+        if (lastStatus) lastStatus.ranks = ranks;
+        renderLobbyRanks({ ranks });
+      } catch (err) {
+        ranksReloadBtn.textContent = "Échec";
+        await new Promise((resolve) => setTimeout(resolve, 1200));
+      } finally {
+        ranksReloadBtn.disabled = false;
+        ranksReloadBtn.textContent = "Recharger les rangs";
+      }
+    });
+
     async function tick() {
       try {
         const [stateRes, statusRes, evRes] = await Promise.all([
@@ -3072,6 +3517,8 @@
         lastEventsCache = events;
 
         render(state, status, events);
+        renderLobbyRanks(status);
+        updateClipBanner();
       } catch (err) {
         offlineStreak += 1;
         const conn = document.getElementById("conn");
@@ -3080,6 +3527,7 @@
 
         if (mounted && lastState) {
           render(lastState, lastStatus, lastEventsCache);
+          updateClipBanner();
           return;
         }
 
@@ -3089,6 +3537,9 @@
         }
       }
     }
+
+    updateClipBanner(true);
+    window.addEventListener("resize", () => updateClipBanner(true));
 
     tick();
     setInterval(tick, 1000);

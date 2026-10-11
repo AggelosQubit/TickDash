@@ -1,5 +1,7 @@
 "use strict";
 
+process.title = "TickDash";
+
 const fs = require("fs");
 const path = require("path");
 const { SESSIONS_DIR, PORT } = require("./lib/paths");
@@ -7,6 +9,8 @@ const { gameSlug, waitForGameStart, waitForGameEnd } = require("./lib/detect-gam
 const { GepTail } = require("./lib/gep-tail");
 const { createDaemonServer } = require("./lib/session-server");
 const { LiveDmgPoller, clearLiveSnapshot } = require("./lib/live-dmg");
+const { ChatClipboard } = require("./lib/chat-clipboard");
+const { ChampSelectClipboard } = require("./lib/champ-select-clipboard");
 
 function tsFolder() {
     const d = new Date();
@@ -55,12 +59,15 @@ async function runSession(stats, daemon) {
     }
 
     liveDmg.start();
+    const chat = new ChatClipboard(stats.gameMode, log, sessionDir, folderName);
+    chat.start();
 
     await waitForGameEnd();
 
     sessionMeta.endedAt = new Date().toISOString();
     fs.writeFileSync(path.join(sessionDir, "session.json"), JSON.stringify(sessionMeta, null, 2), "utf8");
 
+    chat.stop();
     tail.stop();
     liveDmg.stop();
     daemon.detachSession();
@@ -76,6 +83,9 @@ async function main() {
 
     log(`Daemon démarré — port ${PORT} (serveur persistant)`);
     log(`UI → http://127.0.0.1:${PORT}/`);
+
+    const champSelect = new ChampSelectClipboard(log);
+    champSelect.start();
 
     for (; ;) {
         log("En attente d'une game (Live Client :2999)...");

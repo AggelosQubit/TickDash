@@ -9,6 +9,7 @@ If Not fso.FolderExists(logsDir) Then
 End If
 
 shell.CurrentDirectory = dir
+shell.Run "cmd /c node """ & dir & "\scripts\stop-daemon.js""", 0, True
 
 Set exec = shell.Exec("cmd /c netstat -aon | findstr :3789 | findstr LISTENING")
 Do While Not exec.StdOut.AtEndOfStream
@@ -22,6 +23,8 @@ Do While Not exec.StdOut.AtEndOfStream
   End If
 Loop
 
+shell.Run "cmd /c taskkill /F /IM TickDash.exe", 0, True
 WScript.Sleep 1000
 
-shell.Run "cmd /c node daemon.js 1>> logs\daemon.log 2>&1", 0, False
+shell.Run "cmd /c node """ & dir & "\scripts\build-tickdash-exe.js""", 0, True
+shell.Run "cmd /c """"" & dir & "\TickDash.exe"" --watch daemon.js 1>> """ & dir & "\logs\daemon.log"" 2>&1""", 0, False

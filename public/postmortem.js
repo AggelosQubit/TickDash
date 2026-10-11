@@ -268,6 +268,8 @@
     }
 
     const { result, economy, info, gameSec, sessionId, killProximity } = snapshot;
+    const powerScalars = snapshot.powerScalars || { sessionId, samples: [] };
+    root.dataset.powerScalars = JSON.stringify(powerScalars);
     const si = info.summoner_info || {};
     const gd = goldDelta(economy, info);
     const lobby = scoreLobbyMix(economy.players);
