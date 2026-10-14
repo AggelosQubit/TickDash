@@ -21,18 +21,6 @@ const FEATURES = [
 
 let pollTimers = [];
 
-function itemGoldOw(items) {
-  const list = Array.isArray(items)
-    ? items
-    : items && typeof items === "object"
-      ? Object.values(items)
-      : [];
-  return list.reduce(
-    (sum, it) => sum + Number(it?.price || 0) * Number(it?.count || 1),
-    0
-  );
-}
-
 function mapLcItemsOw(items) {
   const list = Array.isArray(items)
     ? items
@@ -150,15 +138,12 @@ function pullDmgShareFromLiveClient() {
       const gameTime = Number(data.gameData?.gameTime ?? 0);
 
       const rows = players.map((p) => {
-        const items = itemGoldOw(p.items);
             const isMe = (p.summonerName || "").toLowerCase() === activeName;
             const name = p.riotIdGameName || (p.summonerName || "?").split("#")[0];
             return {
               name,
               champion: p.championName || "?",
               team: p.team || "ORDER",
-              gold: Math.round(items),
-              itemsGold: Math.round(items),
               items: mapLcItemsOw(p.items),
               cs: Number(p.scores?.creepScore ?? 0),
               level: Number(p.level ?? 1),
@@ -172,9 +157,6 @@ function pullDmgShareFromLiveClient() {
               assists: Number(p.scores?.assists ?? 0),
             };
           });
-
-          const teamGold = {};
-          for (const row of rows) teamGold[row.team] = (teamGold[row.team] || 0) + row.gold;
 
           const me =
             rows.find((p) => p.isMe) ||
@@ -190,8 +172,6 @@ function pullDmgShareFromLiveClient() {
             polledAt: new Date().toISOString(),
             gameTime: Number.isFinite(gameTime) ? gameTime : undefined,
             players: rows,
-            maxGold: Math.max(...rows.map((r) => r.gold), 1),
-            teamGold,
             damage_share: share,
             champ_dmg: champDmg,
             team_dmg: teamDmg,
@@ -213,7 +193,6 @@ async function onGame(info) {
   clearPollers();
   pushStatus({ game: "lol", title: info.title });
   await setFeatures();
-  await ensureItemPrices();
   pullCurrentInfo();
   pullDmgShareFromLiveClient();
   pollTimers.push(setInterval(pullCurrentInfo, 5000));

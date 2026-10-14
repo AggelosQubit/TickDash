@@ -2225,7 +2225,7 @@
       return `<div class="money-panel">
         <div class="money-header">
           ${mins != null ? `<span class="money-time">${mins}:${String(Math.floor(economy.gameTime % 60)).padStart(2, "0")}</span>` : "<span></span>"}
-          <span class="money-note-inline">Or items · compl.${patchNote}</span>
+          <span class="money-note-inline">GoldSpent${patchNote}</span>
         </div>
         ${moneyTeamHtml("ORDER", "Blue", "blue", players, maxGold)}
         ${moneyTeamHtml("CHAOS", "Red", "red", players, maxGold)}
