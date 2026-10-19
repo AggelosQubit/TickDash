@@ -346,6 +346,64 @@
       flex: 1;
       min-height: 0;
     }
+    .feeds-row {
+      flex: 1;
+      min-width: 0;
+      min-height: 0;
+      display: flex;
+    }
+    .feeds-row .events-panel {
+      flex: 1;
+      min-width: 0;
+      border-right: 1px solid var(--border);
+    }
+    .buy-square {
+      flex: 1;
+      min-width: 0;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      background: transparent;
+    }
+    .buy-square h2 {
+      margin: 0;
+      padding: 10px 14px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      background: #0f131c;
+    }
+    .buy-square-body {
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .buy-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .buy-row img {
+      width: 42px;
+      height: 42px;
+      border-radius: 6px;
+      background: #0b0e14;
+      border: 1px solid var(--border);
+      object-fit: cover;
+    }
+    .buy-name {
+      font-size: 13px;
+      font-weight: 650;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
     .live-row .card {
       flex: 1;
       min-width: 0;
@@ -3172,12 +3230,19 @@
                   <div class="strongest-body" id="strongest-body"></div>
                 </div>
               </div>
-              <div class="events-panel">
-                <h2>Events</h2>
-                <div class="toolbar">Combat + ultis des autres (Tab) · pas ton ulti</div>
-                <div class="card-body scroll-pane events" id="events-scroll">
-                  <div class="scroll-inner" id="events-body"></div>
+              <div class="feeds-row">
+                <div class="events-panel">
+                  <h2>Events</h2>
+                  <div class="toolbar">Combat + ultis des autres (Tab) · pas ton ulti</div>
+                  <div class="card-body scroll-pane events" id="events-scroll">
+                    <div class="scroll-inner" id="events-body"></div>
+                  </div>
                 </div>
+                <section class="buy-square" id="buy-square" aria-label="Achats ennemis">
+                  <h2>Achats ennemis</h2>
+                  <div class="toolbar">Objets apparus chez l'adversaire</div>
+                  <div class="buy-square-body" id="buy-body"></div>
+                </section>
               </div>
             </div>
             <div class="money-col">
@@ -3202,7 +3267,22 @@
       mounted = true;
     }
 
+    let frameMockStatus = null;
+
     function render(state, status, events) {
+      const mock = mockFrameActive(state, status);
+      const clockSnap = mock
+        ? { maxGameTimeSeen, matchStartWallMs, endSnapshot }
+        : null;
+      if (mock) {
+        const frame = buildMockFrame();
+        state = frame.state;
+        status = frame.status;
+        events = frame.events;
+        frameMockStatus = status;
+      } else {
+        frameMockStatus = null;
+      }
       lastEvents = events;
       let info = deepDecode(state.info || {});
       syncLastLive(state, status);
@@ -3224,8 +3304,14 @@
       lastInfo = info;
 
       const waiting = status?.waiting || state?.waiting;
-      document.getElementById("conn").textContent = waiting ? "en attente" : "live";
-      document.getElementById("conn").className = waiting ? "pill" : "pill ok";
+      const conn = document.getElementById("conn");
+      if (status?.mockFrame) {
+        conn.textContent = "exemple";
+        conn.className = "pill";
+      } else {
+        conn.textContent = waiting ? "en attente" : "live";
+        conn.className = waiting ? "pill" : "pill ok";
+      }
       const ow = state.ow || {};
       const owEl = document.getElementById("ow-pill");
       if (ow.featuresOk || ow.liveClient) {
@@ -3247,6 +3333,7 @@
 
       if (!mounted) mountApp();
       document.getElementById("camps-body").innerHTML = campsHtml(info.jungle_camps, events, info);
+      renderEnemyBuys(status, state);
       document.getElementById("strongest-ally-body").innerHTML = strongestAllyHtml(info);
       document.getElementById("strongest-body").innerHTML = strongestOpponentHtml(info);
       renderTeamLevels(info);
@@ -3254,6 +3341,194 @@
       document.getElementById("money-body").innerHTML = moneyHtml(info);
       document.getElementById("target-body").innerHTML = mainTargetsHtml(info);
       renderFinalBuild(status);
+      if (clockSnap) {
+        maxGameTimeSeen = clockSnap.maxGameTimeSeen;
+        matchStartWallMs = clockSnap.matchStartWallMs;
+        endSnapshot = clockSnap.endSnapshot;
+      }
+    }
+
+    const MOCK_ICON_PATCH = "16.20.1";
+    const MOCK_ENEMY_BUYS = [
+      { champion: "Lissandra", champ: "Lissandra", itemId: 3089, item: "Coiffe de Rabadon" },
+      { champion: "Jhin", champ: "Jhin", itemId: 3031, item: "Infini" },
+      { champion: "Lee Sin", champ: "LeeSin", itemId: 3078, item: "Force de la Trinité" },
+      { champion: "Darius", champ: "Darius", itemId: 3071, item: "Couperet noir" },
+      { champion: "Jhin", champ: "Jhin", itemId: 3094, item: "Canon ultrarapide" },
+      { champion: "Lissandra", champ: "Lissandra", itemId: 4645, item: "Flamme-ombre" },
+      { champion: "Nautilus", champ: "Nautilus", itemId: 3190, item: "Médaillon de l'Iron Solari" },
+      { champion: "Lee Sin", champ: "LeeSin", itemId: 3020, item: "Chaussures de sorcier" },
+    ];
+
+    function mockEnemyBuys() {
+      return MOCK_ENEMY_BUYS.map((row, index) => ({
+        at: index,
+        champion: row.champion,
+        champIcon: `https://ddragon.leagueoflegends.com/cdn/${MOCK_ICON_PATCH}/img/champion/${row.champ}.png`,
+        itemId: row.itemId,
+        item: row.item,
+        itemIcon: `https://ddragon.leagueoflegends.com/cdn/${MOCK_ICON_PATCH}/img/item/${row.itemId}.png`,
+      }));
+    }
+
+    function mockIcon(kind, id) {
+      return `https://ddragon.leagueoflegends.com/cdn/${MOCK_ICON_PATCH}/img/${kind}/${id}.png`;
+    }
+
+    function mockFrameActive(state, status) {
+      return !state?.livePlayers?.players?.length && !!status?.waiting;
+    }
+
+    function mockPlayer(row) {
+      return {
+        isBot: false,
+        isDead: false,
+        respawnTimer: 0,
+        items: [],
+        ...row,
+        gold: row.gold,
+        itemsGold: row.gold,
+      };
+    }
+
+    function buildMockFrame() {
+      const now = Date.now();
+      const ago = (sec) => new Date(now - sec * 1000).toISOString();
+      const gameTime = 18 * 60 + 40;
+      const players = [
+        mockPlayer({ champion: "Gnar", name: "DémoTop", team: "ORDER", position: "TOP", kills: 2, deaths: 1, assists: 4, cs: 180, level: 13, gold: 6400, items: [{ itemID: 3071 }] }),
+        mockPlayer({ champion: "Viego", name: "DémoJgl", team: "ORDER", position: "JUNGLE", kills: 3, deaths: 2, assists: 8, cs: 150, level: 12, gold: 7200, items: [{ itemID: 3078 }] }),
+        mockPlayer({ champion: "Ahri", name: "Démo", team: "ORDER", position: "MIDDLE", kills: 7, deaths: 2, assists: 6, cs: 190, level: 14, gold: 8500, isMe: true, items: [{ itemID: 3089 }, { itemID: 3157 }] }),
+        mockPlayer({ champion: "Jinx", name: "DémoAdc", team: "ORDER", position: "BOTTOM", kills: 8, deaths: 1, assists: 5, cs: 210, level: 13, gold: 9100, items: [{ itemID: 3031 }, { itemID: 3094 }] }),
+        mockPlayer({ champion: "Lulu", name: "DémoSup", team: "ORDER", position: "UTILITY", kills: 1, deaths: 3, assists: 14, cs: 40, level: 11, gold: 3800, items: [{ itemID: 3190 }] }),
+        mockPlayer({ champion: "Darius", name: "EnnemiTop", team: "CHAOS", position: "TOP", kills: 3, deaths: 4, assists: 2, cs: 160, level: 12, gold: 6900, items: [{ itemID: 3071 }] }),
+        mockPlayer({ champion: "Lee Sin", name: "EnnemiJgl", team: "CHAOS", position: "JUNGLE", kills: 2, deaths: 5, assists: 4, cs: 140, level: 11, gold: 7600, items: [{ itemID: 3078 }] }),
+        mockPlayer({ champion: "Lissandra", name: "EnnemiMid", team: "CHAOS", position: "MIDDLE", kills: 4, deaths: 4, assists: 3, cs: 170, level: 13, gold: 9800, items: [{ itemID: 3089 }, { itemID: 4645 }] }),
+        mockPlayer({ champion: "Jhin", name: "EnnemiAdc", team: "CHAOS", position: "BOTTOM", kills: 5, deaths: 3, assists: 2, cs: 200, level: 14, gold: 10200, isDead: true, respawnTimer: 22, items: [{ itemID: 3031 }] }),
+        mockPlayer({ champion: "Nautilus", name: "EnnemiSup", team: "CHAOS", position: "UTILITY", kills: 0, deaths: 6, assists: 8, cs: 30, level: 10, gold: 4100, items: [{ itemID: 3190 }] }),
+      ];
+      const info = {
+        summoner_info: { name: "Démo", champion: "Ahri", region: "EUW" },
+        kill: { kills: 7 },
+        death: { deaths: 2 },
+        assist: { assists: 6 },
+        level: { level: 14 },
+        matchState: { matchId: "DEMO" },
+        gep_internal: { version_info: { local_version: "exemple" } },
+        jungle_camps: {
+          blue_blue: { name: "Blue West", alive: true },
+          blue_gromp: { name: "Gromp West", alive: false },
+          blue_wolves: { name: "Wolves West", alive: true },
+          blue_raptors: { name: "Raptors West", alive: true },
+          blue_red: { name: "Red West", alive: false },
+          blue_krugs: { name: "Krugs West", alive: true },
+          red_blue: { name: "Blue East", alive: true },
+          red_gromp: { name: "Gromp East", alive: true },
+          red_wolves: { name: "Wolves East", alive: false },
+          red_raptors: { name: "Raptors East", alive: true },
+          red_red: { name: "Red East", alive: true },
+          red_krugs: { name: "Krugs East", alive: false },
+          dragon: { name: "Dragon", alive: false },
+          baron: { name: "Baron", alive: false },
+          herald: { name: "Rift Herald", alive: true },
+          grubs: { name: "VoidGrubs", alive: false },
+          scuttle_bot: { name: "Scuttle Crab River Bot", alive: true },
+          scuttle_top: { name: "Scuttle Crab River Top", alive: false },
+        },
+        tickdash: {
+          gameTime,
+          polledAt: new Date(now).toISOString(),
+          players,
+          teamGold: { ORDER: 35000, CHAOS: 38600 },
+        },
+      };
+      const events = [
+        { type: "event", feature: "announcer", name: "turret_destroy", at: ago(25), data: { data: "enemy" } },
+        { type: "event", feature: "tickdash", name: "ult_used", at: ago(40), data: { champion: "Jinx", player: "DémoAdc" } },
+        { type: "event", feature: "assist", name: "assist", at: ago(48), data: { count: 6 } },
+        { type: "event", feature: "kill", name: "kill", at: ago(50), data: { label: "kill", count: 7, totalKills: 7 } },
+        { type: "event", feature: "announcer", name: "ace", at: ago(55), data: {} },
+        { type: "event", feature: "death", name: "death", at: ago(200), data: { count: 2 } },
+        { type: "event", feature: "announcer", name: "first_blood", at: ago(900), data: {} },
+        { type: "info", feature: "jungle_camps", key: "blue_gromp", at: ago(30), value: { alive: false } },
+        { type: "info", feature: "jungle_camps", key: "dragon", at: ago(80), value: { alive: false } },
+        { type: "info", feature: "jungle_camps", key: "blue_gromp", at: ago(200), value: { alive: true } },
+        { type: "info", feature: "tickdash", at: ago(20), info: { economy: { teamGold: { ORDER: 34800, CHAOS: 37200 }, gameTime: gameTime - 20 }, gameTime: gameTime - 20 } },
+        { type: "info", feature: "tickdash", at: ago(70), info: { economy: { teamGold: { ORDER: 33100, CHAOS: 36000 }, gameTime: gameTime - 70 }, gameTime: gameTime - 70 } },
+      ];
+      const buildItems = [
+        [3118, "Malfaisance"],
+        [3020, "Chaussures de sorcier"],
+        [4645, "Flamme-ombre"],
+        [3157, "Sablier de Zhonya"],
+        [3089, "Coiffe de Rabadon"],
+        [3041, "Voleur d'âmes de Mejai"],
+      ];
+      return {
+        state: {
+          info,
+          eventCount: events.length,
+          waiting: true,
+          ow: { liveClient: true, source: "daemon", featuresOk: true },
+        },
+        status: {
+          waiting: true,
+          mockFrame: true,
+          session: { game: "Démo" },
+          enemyBuys: mockEnemyBuys(),
+          build: {
+            champion: "Ahri",
+            role: "Mid",
+            patch: "16.20",
+            items: buildItems.map(([id, name]) => ({ id, name, icon: mockIcon("item", id) })),
+          },
+          ranks: {
+            allies: [
+              { position: "Top", name: "DémoTop#EUW", label: "Émeraude II · 61 LP", tier: "emerald", lp: 61 },
+              { position: "Jgl", name: "DémoJgl#EUW", label: "Diamant IV · 12 LP", tier: "diamond", lp: 12 },
+              { position: "Mid", name: "Démo#EUW", label: "Diamant III · 40 LP", tier: "diamond", lp: 40 },
+              { position: "Adc", name: "DémoAdc#EUW", label: "Platine I · 88 LP", tier: "platinum", lp: 88 },
+              { position: "Sup", name: "DémoSup#EUW", label: "Or I · 34 LP", tier: "gold", lp: 34 },
+            ],
+            opponents: [
+              { position: "Top", name: "EnnemiTop#EUW", label: "Diamant II · 18 LP", tier: "diamond", lp: 18 },
+              { position: "Jgl", name: "EnnemiJgl#EUW", label: "Émeraude I · 75 LP", tier: "emerald", lp: 75 },
+              { position: "Mid", name: "EnnemiMid#EUW", label: "Maître · 120 LP", tier: "master", lp: 120 },
+              { position: "Adc", name: "EnnemiAdc#EUW", label: "Diamant IV · 3 LP", tier: "diamond", lp: 3 },
+              { position: "Sup", name: "EnnemiSup#EUW", label: "Platine II · 51 LP", tier: "platinum", lp: 51 },
+            ],
+          },
+        },
+        events,
+      };
+    }
+
+    let buyKey = null;
+    function renderEnemyBuys(status, state) {
+      const root = document.getElementById("buy-body");
+      if (!root) return;
+      const real = status?.enemyBuys || [];
+      const inGame = !!(state?.livePlayers?.players?.length);
+      const example = !!status?.mockFrame || (!inGame && !real.length);
+      const buys = inGame ? real : real.length ? real : mockEnemyBuys();
+      const key = `${example ? "mock" : "live"}:${buys.map((row) => `${row.at}:${row.champion}:${row.itemId}`).join("|")}`;
+      const bar = document.querySelector("#buy-square .toolbar");
+      if (bar) bar.textContent = example ? "Exemple — hors partie" : "Objets apparus chez l'adversaire";
+      if (key === buyKey) return;
+      buyKey = key;
+      if (!buys.length) {
+        root.innerHTML = `<div class="target-wait">Aucun achat ennemi</div>`;
+        return;
+      }
+      root.innerHTML = buys
+        .map(
+          (row) => `<div class="buy-row" title="${escapeAttr(row.champion)} · ${escapeAttr(row.item)}">
+            <img src="${escapeAttr(row.champIcon)}" alt="${escapeAttr(row.champion)}">
+            <img src="${escapeAttr(row.itemIcon)}" alt="${escapeAttr(row.item)}">
+            <span class="buy-name">${escapeAttr(row.item)}</span>
+          </div>`
+        )
+        .join("");
     }
 
     function syncLastLive(state, status) {
@@ -3459,7 +3734,8 @@
       const root = document.getElementById("lobby-ranks");
       const grid = document.getElementById("lobby-ranks-grid");
       if (!root || !grid) return;
-      const ranks = status?.ranks || { allies: [], opponents: [] };
+      const shown = frameMockStatus || status;
+      const ranks = shown?.ranks || { allies: [], opponents: [] };
       const allies = ranks.allies || [];
       const opponents = ranks.opponents || [];
       const key = JSON.stringify({ allies, opponents });
